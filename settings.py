@@ -1,4 +1,4 @@
-'''
+"""
 Provides access accross modules to app settings.
 
 Usage:
@@ -13,7 +13,7 @@ defined.
 
 Running this file on its own will update 'dummy_secret_settings.json'
 to reflect the current state of the real 'secret_settings.json' file.
-'''
+"""
 
 import json
 
@@ -24,13 +24,12 @@ with open('secrets/secret_settings.json') as f:
 # -------------------------------------------------------------------
 
 def generate_dummy_secret_settings():
-    '''
-    Based on the real 'secrets/secret_settings.json' file, creates a 
-    dummy version of this file that shows which key-value pairs should 
-    be defined. The keys are preserved and the secret values are 
-    replaced by a default instantiation of their original datatype 
-    ('0' for ints, '{}' for dicts, etc.).
-    '''
+    """ Based on the real 'secrets/secret_settings.json' file, creates 
+    a dummy version of this file that shows which key-value pairs should 
+    be defined. The keys are preserved and the secret values are replaced 
+    by a default instantiation of their original datatype ('0' for ints, 
+    '{}' for dicts, etc.).
+    """
     with open('secrets/secret_settings.json') as f:
         secrets = json.load(f)
     for key in secrets:
