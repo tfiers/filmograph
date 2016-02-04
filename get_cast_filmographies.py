@@ -47,7 +47,7 @@ def get_cast_filmographies(query):
 def print_cast_filmographies(cast_filmographies):
     width = 40
     for role, filmography in cast_filmographies:
-        print(u'\n\n\n\n{:>{}} -- {}\n'
+        print(4*u'\n' + u'{:>{}} -- {}\n'
                 .format(role['character'], width, role['name']))
         for w in filmography[:5]:
             if w['media_type'] == 'movie':
@@ -57,7 +57,7 @@ def print_cast_filmographies(cast_filmographies):
                 print(u'{:>{}} in "{}"'
                         .format(w['character'], width, w['name']))
             else:
-                print(u' '*(width-8)+'appeared in "{}"'
+                print((width-8)*u' ' + u'appeared in "{}"'
                         .format(w['name']))
 
 def cli(query):
