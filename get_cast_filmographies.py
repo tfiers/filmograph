@@ -35,8 +35,8 @@ def get_cast_filmographies(query):
                 **first_result))['cast']
     cast_filmographies = []
     for role in cast[:7]:
-        filmography = sorted(\
-                get_api_response('/person/{id}/combined_credits'\
+        filmography = sorted(
+                get_api_response('/person/{id}/combined_credits'
                     .format(**role))['cast'], 
                 key=lambda w: popularities.get(w["id"], 0),
                 reverse=True)
@@ -47,18 +47,18 @@ def get_cast_filmographies(query):
 def print_cast_filmographies(cast_filmographies):
     width = 40
     for role, filmography in cast_filmographies:
-        print(u'\n\n\n\n{character:>{width}} -- {name}\n'.format(
-            character=role['character'], width=width, name=role['name']))
+        print(u'\n\n\n\n{:>{}} -- {}\n'
+                .format(role['character'], width, role['name']))
         for w in filmography[:5]:
             if w['media_type'] == 'movie':
-                print(u'{character:>{width}} in "{title}"'.format(
-                    character=w['character'], width=width, title=w['title']))
+                print(u'{:>{}} in "{}"'
+                        .format(w['character'], width, w['title']))
             elif w['character'] != '':
-                print(u'{character:>{width}} in "{name}"'.format(
-                    character=w['character'], width=width, name=w['name']))
+                print(u'{:>{}} in "{}"'
+                        .format(w['character'], width, w['name']))
             else:
-                print(u' '*(width-8)+'appeared in "{name:}"'.format(
-                    name=w['name']))
+                print(u' '*(width-8)+'appeared in "{}"'
+                        .format(w['name']))
 
 def cli(query):
     if popularities == {}:
