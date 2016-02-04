@@ -26,7 +26,7 @@ with open('secrets/secrets.json') as f:
 for secret in secrets:
     settings[secret['key']] = secret['value']
 
-# -------------------------------------------------------------------
+# --------------------------------------------------------------------
 
 def generate_dummy_secrets():
     """ Based on the real 'secrets/secrets.json' file, creates a dummy 

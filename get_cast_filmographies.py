@@ -30,14 +30,13 @@ def cache_popularities():
 def get_cast_filmographies(query):
     first_result = get_api_response('/search/multi', 
                     {'query': query})['results'][0]
-    cast = get_api_response(
-            '/{media_type}/{id}/credits'.format(
-                **first_result))['cast']
+    cast = get_api_response('/{media_type}/{id}/credits'
+                                .format(**first_result))['cast']
     cast_filmographies = []
     for role in cast[:7]:
         filmography = sorted(
                 get_api_response('/person/{id}/combined_credits'
-                    .format(**role))['cast'], 
+                                    .format(**role))['cast'], 
                 key=lambda w: popularities.get(w["id"], 0),
                 reverse=True)
         cast_filmographies.append((role, [w for w in filmography \
