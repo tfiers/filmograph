@@ -1,5 +1,5 @@
 """
-Provides access accross modules to app settings.
+Provides access across modules to app settings.
 
 Usage:
 
