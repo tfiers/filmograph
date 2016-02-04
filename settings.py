@@ -25,10 +25,11 @@ with open('secrets/secret_settings.json') as f:
 
 def generate_dummy_secret_settings():
     '''
-    Creates a file that shows which key-value pairs should be in the 
-    real 'secrets/secret_settings.json' file. The keys are preserved 
-    and the secret values are replaced by a default instantiation 
-    of their original datatype ('0' for ints, '{}' for dicts, etc.). 
+    Based on the real 'secrets/secret_settings.json' file, creates a 
+    dummy version of this file that shows which key-value pairs should 
+    be defined. The keys are preserved and the secret values are 
+    replaced by a default instantiation of their original datatype 
+    ('0' for ints, '{}' for dicts, etc.).
     '''
     with open('secrets/secret_settings.json') as f:
         secrets = json.load(f)
