@@ -46,9 +46,10 @@ def cache_popularities(movie_pages=5, tv_show_pages=2):
 
 def get_cast_filmographies(query):
     """ Searches for the most popular movie or TV show with 'query' in 
-    its name. Returns a dictionary with, for each actor of its top 
-    billed cast, all movies and TV shows in which they appeared, sorted 
-    by popularity, and annotated with their role in that production.
+    its name. Returns a list with, for each actor of its top billed 
+    cast, the role that they played in it, and all the other roles they
+    played in other movies and TV shows, sorted by popularity of these
+    movies and shows.
     """
     first_result = get_api_response('/search/multi', 
                     {'query': query})['results'][0]
@@ -61,10 +62,16 @@ def get_cast_filmographies(query):
         filmography = sorted(
                 get_api_response('/person/{id}/combined_credits'
                                     .format(**role))['cast'], 
-                key=lambda w: popularities.get(w["id"], 0),
+                key=lambda screen_item: \
+                    popularities.get(screen_item["id"], 0),
                 reverse=True)
-        cast_filmographies.append((role, [w for w in filmography \
-            if w["id"] != first_result["id"]],))
+        cast_filmographies.append({
+            'role': role,
+            # Don't include the queried movie in the filmography:
+            'filmography': filter(
+                lambda screen_item: \
+                    screen_item["id"] != first_result["id"],
+                filmography), })
     return cast_filmographies
 
 def get_cast_filmographies_as_string(query):
@@ -75,19 +82,25 @@ def get_cast_filmographies_as_string(query):
     cast_filmographies = get_cast_filmographies(query)
     s = ''
     width = 40
-    for role, filmography in cast_filmographies:
-        s += 4*u'\n' + u'{:>{}} -- {}\n\n'\
-              .format(role['character'], width, role['name'])
-        for w in filmography[:5]:
-            if w['media_type'] == 'movie':
-                s += u'{:>{}} in "{}"\n'\
-                      .format(w['character'], width, w['title'])
-            elif w['character'] != '':
-                s += u'{:>{}} in "{}"\n'\
-                      .format(w['character'], width, w['name'])
+    for cast_entry in cast_filmographies:
+        s += 4*u'\n' + u'{:>{}} -- {}\n\n'.format(
+            cast_entry['role']['character'], 
+            width, 
+            cast_entry['role']['name'])
+        for screen_item in cast_entry['filmography'][:5]:
+            if screen_item['media_type'] == 'movie':
+                s += u'{:>{}} in "{}"\n'.format(
+                    screen_item['character'], 
+                    width, 
+                    screen_item['title'])
+            elif screen_item['character'] != '':
+                s += u'{:>{}} in "{}"\n'.format(
+                    screen_item['character'], 
+                    width, 
+                    screen_item['name'])
             else:
-                s += (width-8)*u' ' + u'appeared in "{}"\n'\
-                      .format(w['name'])
+                s += (width-8)*u' ' + u'appeared in "{}"\n'.format(
+                    screen_item['name'])
     return s
 
 # Command line interface for this module.
