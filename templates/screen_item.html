@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block body %}
+    {% if cast_filmographies is none %}
+        <p>Hello there!</p>
+    {% else %}
+    {% for cast_entry in cast_filmographies %}
+        <p><strong>{{ cast_entry.role.name }}</strong> - {{ cast_entry.role.character }}</p>
+    {% endfor %}
+    {% endif %}
+{% endblock body %}
