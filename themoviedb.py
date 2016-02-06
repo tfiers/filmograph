@@ -50,10 +50,10 @@ def cache_popularities(movie_pages=5, tv_show_pages=2):
 
 def get_cast_filmographies(query):
     """ Searches for the most popular movie or TV show with 'query' in 
-    its name and returns a list with, for each actor of the movie or 
-    the TV show's top billed cast, the role that they played in it, 
-    and all other roles they played in other movies and TV shows, 
-    sorted by popularity of these movies and shows.
+    its name and returns a list with, for each of the top billed actors 
+    of this movie or TV show, the role that they played in it, and all 
+    other roles they played in other movies and TV shows, sorted by 
+    popularity of these movies and shows.
     """
     first_result = get_api_response('/search/multi', 
                     {'query': query})['results'][0]
@@ -69,7 +69,7 @@ def get_cast_filmographies(query):
         for screen_item in filmography:
             screen_item['popularity'] = \
                 popularities.get(screen_item["id"], 0)
-        # Sort on popularity, from hight to low.
+        # Sort on popularity, from high to low.
         filmography = sorted(filmography, key=lambda screen_item: \
             screen_item["popularity"], reverse=True)
         # Don't include the queried movie in the filmography.
