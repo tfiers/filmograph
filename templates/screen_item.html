@@ -4,7 +4,20 @@
         <p>Hello there!</p>
     {% else %}
     {% for cast_entry in cast_filmographies %}
-        <p><strong>{{ cast_entry.role.name }}</strong> - {{ cast_entry.role.character }}</p>
+        <p><strong>{{ cast_entry.role.name }}</strong> – {{ cast_entry.role.character }}</p>
+        <ul>
+            {% for credit in cast_entry.filmography %}
+               {% if credit.popularity > 0 %}
+                  {% if credit.media_type == "movie" %}
+                  <li><em>{{ credit.character }}</em> in {{ credit.title }}</li>
+                  {% elif credit.character %}
+                  <li><em>{{ credit.character }}</em> in {{ credit.name }}</li>
+                  {% else %}
+                  <li>Appeared in {{ credit.name }}</li>
+                  {% endif %}
+               {% endif %}
+            {% endfor %}                
+        </ul>
     {% endfor %}
     {% endif %}
 {% endblock body %}

@@ -1,4 +1,5 @@
-from ..themoviedb import get_api_response, get_cast_filmographies
+from ..themoviedb import (get_api_response, cache_popularities, 
+    get_cast_filmographies)
 
 def test_get_api_response():
     config = get_api_response('/configuration')
@@ -8,6 +9,7 @@ def test_get_api_response():
     assert r['page'] == 2
 
 def test_get_cast_filmographies():
+    cache_popularities(1,1)
     cf = get_cast_filmographies('the martian')
     assert cf[0]['role']['character'] == 'Mark Watney'
     assert cf[0]['role']['name'] == 'Matt Damon'
