@@ -12,7 +12,7 @@ file 'dummy_secrets.json' shows how this file should be structured and
 which secret keys should be defined. See 'secrets/README.md'.
 
 Running this file on its own will update 'dummy_secrets.json' to 
-reflect the current state of the real 'secrets.json' file.
+reflect the current state of a real 'secrets.json' file.
 (As a bonus, this also validates the json in the secrets file).
 """
 
