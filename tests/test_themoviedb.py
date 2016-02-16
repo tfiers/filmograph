@@ -10,7 +10,8 @@ def test_get_api_response():
 
 def test_get_cast_filmographies():
     cache_popularities(1,1)
-    cf = get_cast_filmographies('the martian')
+    screen_item, cf = get_cast_filmographies('the martian')
+    assert screen_item['title'] == 'The Martian'
     assert cf[0]['role']['character'] == 'Mark Watney'
     assert cf[0]['role']['name'] == 'Matt Damon'
     movies = [screen_item['title'] for screen_item in \
