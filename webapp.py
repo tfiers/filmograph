@@ -1,4 +1,4 @@
-""""
+"""
 Filmograph web app.
 
 Lets the user search for movies, TV shows and people, and shows them
