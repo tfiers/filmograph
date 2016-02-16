@@ -14,7 +14,7 @@ def get_api_response(path, params={}):
     """
     url = 'https://api.themoviedb.org/3'+path
     params.update({'api_key': settings['themoviedb_api_key']})
-    logger.info('Requesting {}'.format(path))
+    logger.info(u'Requesting {}'.format(path))
     # Convert the json to an ordered dictionary, preserving the
     # insertion order of key-value pairs in the original json.
     return get(url, params=params).json(object_pairs_hook=OrderedDict)
@@ -54,10 +54,10 @@ def cache_popularities(movie_pages=5, tv_show_pages=2):
 
 def get_cast_filmographies(query):
     """ Searches for the most popular movie or TV show with 'query' in
-    its name and returns a list with, for each of the top billed actors
-    of this movie or TV show, the role that they played in it, and all
-    other roles they played in other movies and TV shows, sorted by
-    popularity of these movies and shows.
+    its name, and returns its metadata and a list with, for each of
+    the top billed actors of this movie or TV show, the role that they
+    played in it, and all other roles they played in other movies and
+    TV shows, sorted by popularity of these movies and shows.
     """
     first_result = get_api_response('/search/multi',
                                     {'query': query})['results'][0]
@@ -86,7 +86,7 @@ def get_cast_filmographies(query):
         cast_filmographies.append({'role': role,
                                    'filmography': filmography})
 
-    return cast_filmographies
+    return first_result, cast_filmographies
 
 
 def get_cast_filmographies_as_string(query):
@@ -117,6 +117,7 @@ def get_cast_filmographies_as_string(query):
                 s += (width-8)*u' ' + u'appeared in "{}"\n'.format(
                     screen_item['name'])
     return s
+
 
 # Command line interface for this module.
 if __name__ == '__main__':

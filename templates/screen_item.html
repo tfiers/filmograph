@@ -1,23 +1,32 @@
 {% extends "base.html" %}
 {% block body %}
-    {% if cast_filmographies is none %}
-        <p>Hello there!</p>
-    {% else %}
-    {% for cast_entry in cast_filmographies %}
-        <p><strong>{{ cast_entry.role.name }}</strong> – {{ cast_entry.role.character }}</p>
-        <ul>
-            {% for credit in cast_entry.filmography %}
-               {% if credit.popularity > 0 %}
-                  {% if credit.media_type == "movie" %}
-                  <li><em>{{ credit.character }}</em> in {{ credit.title }}</li>
-                  {% elif credit.character %}
-                  <li><em>{{ credit.character }}</em> in {{ credit.name }}</li>
-                  {% else %}
-                  <li>Appeared in {{ credit.name }}</li>
-                  {% endif %}
-               {% endif %}
-            {% endfor %}                
-        </ul>
-    {% endfor %}
+    <form method="get">
+        <input type="search" name="q" placeholder="Search for a movie or a TV show">
+        <input type="submit" value="Go">
+    </form>
+    {% if screen_item_title is not none %}
+        <h1>Cast filmographies for <strong>{{ screen_item_title }}</strong></h1>
+        {% for cast_entry in cast_filmographies %}
+            <p><strong>{{ cast_entry.role.name }}</strong> – {{ cast_entry.role.character }}</p>
+            {% for image_metadata in cast_entry.role.images_metadata %}
+                <a href="{{ image_metadata.image_url }}"><img src="{{ image_metadata.thumb_url }}"></a>
+            {% endfor %}
+            <ul>
+                {% for credit in cast_entry.filmography %}
+                <li>
+                    {% if credit.media_type == "movie" %}
+                        <p><em>{{ credit.character }}</em> in <a href="/?q={{ credit.title }}">{{ credit.title }}</a></p>
+                    {% elif credit.character %}
+                        <p><em>{{ credit.character }}</em> in <a href="/?q={{ credit.name }}">{{ credit.name }}</a></p>
+                    {% else %}
+                        <p>Appeared in <a href="/?q={{ credit.name }}">{{ credit.name }}</a></p>
+                    {% endif %}
+                    {% for image_metadata in credit.images_metadata %}
+                        <a href="{{ image_metadata.image_url }}"><img src="{{ image_metadata.thumb_url }}"></a>
+                    {% endfor %}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endfor %}
     {% endif %}
 {% endblock body %}
