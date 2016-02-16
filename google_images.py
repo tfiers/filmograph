@@ -12,8 +12,8 @@ def get_search_results_metadata(screen_item_name, person_name, character_name):
     """
     # Clean up the search terms to compose the Google Images search url.
     screen_item_name = screen_item_name.strip().replace(' ', '+')
-    person_name = person_name.strip().replace(' ', '+')
-    character_name = character_name.strip().replace(' ', '+')
+    person_name      =      person_name.strip().replace(' ', '+')
+    character_name   =   character_name.strip().replace(' ', '+')
     url = u'https://www.google.com/search?tbm=isch&q={}+{}'.format(
            screen_item_name, person_name)
     # Pose as a Firefox browser. (Otherwise we get an older version of
