@@ -1,20 +1,27 @@
 from settings import settings
 from loggers import logger
+from urllib import urlencode
 from requests import get
 from collections import OrderedDict
 
 popularities = {}
 
 
-def get_api_response(path, params={}):
+def get_api_response(path, params=None):
     """ Queries v3 of themoviedb.org's API for the resource at the
     given path, with the optional url params, and returns the result
     as a dictionary. API reference: http://docs.themoviedb.apiary.io/
     The current rate limit is 40 requests every 10 seconds.
     """
+    # We should not use '{}', a mutable object, as the default
+    # argument value for 'params' here. See:
+    # http://stackoverflow.com/a/1145781/2611913
+    if params is None:
+        params = {}
     url = 'https://api.themoviedb.org/3'+path
+    logger.info(u'Requesting themoviedb resource {}{}'.format(
+        path, "?{}".format(urlencode(params)) if params else ""))
     params.update({'api_key': settings['themoviedb_api_key']})
-    logger.info(u'Requesting {}'.format(path))
     # Convert the json to an ordered dictionary, preserving the
     # insertion order of key-value pairs in the original json.
     return get(url, params=params).json(object_pairs_hook=OrderedDict)

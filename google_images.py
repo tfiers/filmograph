@@ -11,11 +11,11 @@ def get_search_results_metadata(screen_item_name, person_name, character_name):
     including urls to the original image and to a thumbnail version.
     """
     # Clean up the search terms to compose the Google Images search url.
-    screen_item_name = screen_item_name.strip().replace(' ', '+')
-    person_name      =      person_name.strip().replace(' ', '+')
-    character_name   =   character_name.strip().replace(' ', '+')
-    url = u'https://www.google.com/search?tbm=isch&q={}+{}'.format(
-           screen_item_name, person_name)
+    screen_item_name  =  screen_item_name.strip().replace(' ', '+')
+    person_name       =       person_name.strip().replace(' ', '+')
+    character_name    =    character_name.strip().replace(' ', '+')
+    query = "{}+{}".format(screen_item_name, person_name)
+    url = u'https://www.google.com/search?tbm=isch&q={}'.format(query)
     # Pose as a Firefox browser. (Otherwise we get an older version of
     # the Google Search app, intended for non-javascript browsers, with
     # less relevant search results.)
@@ -23,7 +23,7 @@ def get_search_results_metadata(screen_item_name, person_name, character_name):
                               'rv:34.0) Gecko/20100101 Firefox/34.0'),
                'Accept-Language': 'en'}
     # Download and parse the search results page.
-    logger.info(u'Requesting {}'.format(url))
+    logger.info(u'Requesting Google Images search for {}'.format(query))
     r = get(url, headers=headers)
     soup = BeautifulSoup(r.content, 'html.parser')
     # See the appendix below for the HTML structure of the interesting
