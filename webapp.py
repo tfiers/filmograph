@@ -26,19 +26,20 @@ def get_cast_filmographies_with_images(query, num_cast_members=4,
     else:
         screen_item, cast_filmographies = \
                         themoviedb.get_cast_filmographies(query)
-        # import json
-        # with open('the_martian_cast_filmographies.json') as f:
-        #     cast_filmographies = json.load(f)
+        # Fetch the title of the screen item.
         title_key = 'title' \
             if screen_item['media_type'] == 'movie'\
             else 'name'
         screen_item_title = screen_item[title_key]
+        # Limit the number of cast members.
         cast_filmographies = cast_filmographies[:num_cast_members]
+        # Add a limited number of images for each of the cast member's
+        # roles. Also limit the number of roles per cast member.
         for cast_entry in cast_filmographies:
             cast_entry['filmography'] = \
                         cast_entry['filmography'][:num_screen_items]
-            cast_entry['role']['images_metadata'] = \
-                google_images.get_search_results_metadata(
+            cast_entry['role']['images_metadata'] = google_images.\
+                                get_search_results_metadata(
                                     screen_item_title,
                                     cast_entry['role']['name'],
                                     cast_entry['role']['character']
@@ -46,8 +47,8 @@ def get_cast_filmographies_with_images(query, num_cast_members=4,
             for credit in cast_entry['filmography']:
                 credit_title_key = 'title' \
                         if credit['media_type'] == 'movie' else 'name'
-                credit['images_metadata'] = \
-                    google_images.get_search_results_metadata(
+                credit['images_metadata'] = google_images.\
+                                    get_search_results_metadata(
                                         credit[credit_title_key],
                                         cast_entry['role']['name'],
                                         credit['character']
