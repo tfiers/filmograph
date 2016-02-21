@@ -24,8 +24,8 @@ def get_cast_filmographies_with_images(query, num_cast_members=4,
         screen_item_title = None
         cast_filmographies = None
     else:
-        screen_item, cast_filmographies = \
-                        themoviedb.get_cast_filmographies(query)
+        screen_item, cast_filmographies = themoviedb.\
+                                    .get_cast_filmographies(query)
         # Fetch the title of the screen item.
         title_key = 'title' \
             if screen_item['media_type'] == 'movie'\
