@@ -4,6 +4,7 @@ from urllib import urlencode
 from requests import get
 from collections import OrderedDict
 
+
 popularities = {}
 
 
@@ -41,7 +42,7 @@ def get_all_entries(path, start_page=1, end_page=None,
     results = response[entries_key]
     if end_page is None:
         end_page = response.get('total_pages', 1)
-    for page in range(start_page+1, end_page+1):
+    for page in xrange(start_page+1, end_page+1):
         results += get_api_response(path, {'page': page})[entries_key]
     return results
 
