@@ -16,6 +16,9 @@ Usage:
 """
 
 import logging
+from settings import settings
+
+logging_level = getattr(logging, settings['logging_level'])
 
 simple_formatter = logging.Formatter(
     '%(asctime)s %(levelname)s: %(message)s'
@@ -27,8 +30,8 @@ extended_formatter = logging.Formatter(('%(asctime)s '
 
 # Note that we must set both the level of the logger and the handler.
 logger = logging.getLogger('default_logger')
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging_level)
 console_output = logging.StreamHandler()
-console_output.setLevel(logging.DEBUG)
+console_output.setLevel(logging_level)
 console_output.setFormatter(simple_formatter)
 logger.addHandler(console_output)
