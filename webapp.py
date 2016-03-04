@@ -18,7 +18,9 @@ def get_cast_filmographies_with_images(query, num_cast_members=4,
     """ Combines the cast filmographies of the screen item best match-
     ing the given query with images of the actors in their roles. Lim-
     its the number of cast members, screen items per cast member, and
-    images per screen item to the supplied numbers.
+    images per screen item to the supplied numbers. Returns two items:
+    1. The name of the screen item best matching the given query;
+    2. The cast filmographies with images, as described above.
     """
     if query is None:
         screen_item_title = None
