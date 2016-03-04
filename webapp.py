@@ -61,7 +61,7 @@ def get_cast_filmographies_with_images(query, num_cast_members=4,
 # --------------------------------------------------------------------
 
 # Create the Flask WSGI application, our central webapp object.
-app = Flask('filmograph')
+app = Flask('screenkin')
 
 
 @app.route('/')
