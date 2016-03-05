@@ -19,8 +19,11 @@ to reflect the current state of a real 'secrets.json' file.
 import json
 from collections import OrderedDict
 
+SECRET_SETTINGS_FILE        = 'secrets/secrets.json'
+DUMMY_SECRET_SETTINGS_FILE  = 'secrets/dummy_secrets.json'
+
 settings = {}
-with open('secrets/secrets.json') as f:
+with open(SECRET_SETTINGS_FILE) as f:
     # We use an OrderedDict to preserve the logical ordering 
     # ("key", "value", "description").
     secrets = json.load(f, object_pairs_hook=OrderedDict)
@@ -37,12 +40,12 @@ def generate_dummy_secrets():
     a default instantiation of their original datatype ('0' for ints, 
     '{}' for dicts, etc.).
     """
-    with open('secrets/secrets.json') as f:
+    with open(SECRET_SETTINGS_FILE) as f:
         secrets = json.load(f, object_pairs_hook=OrderedDict)
     for secret in secrets:
         t = type(secret['value'])
         secret['value'] = t.__new__(t)
-    with open('secrets/dummy_secrets.json', 'w') as f:
+    with open(DUMMY_SECRET_SETTINGS_FILE, 'w') as f:
         json.dump(secrets, f, indent=4)
 
 if __name__ == '__main__':
