@@ -19,6 +19,7 @@ to reflect the current state of a real 'secrets.json' file.
 import json
 from collections import OrderedDict
 
+# Note: make sure SECRET_SETTINGS_FILE is gitignored.
 SECRET_SETTINGS_FILE        = 'secrets/secrets.json'
 DUMMY_SECRET_SETTINGS_FILE  = 'secrets/dummy_secrets.json'
 
