@@ -10,13 +10,13 @@ def test_get_api_response():
 
 def test_get_cast_filmographies():
     cache_popularities(1,1)
-    screen_item, cf = get_cast_filmographies('the martian')
-    assert screen_item['title'] == 'The Martian'
+    production, cf = get_cast_filmographies('the martian')
+    assert production['title'] == 'The Martian'
     assert cf[0]['role']['character'] == 'Mark Watney'
     assert cf[0]['role']['name'] == 'Matt Damon'
-    movies = [screen_item['title'] for screen_item in \
-        cf[0]['filmography'] if screen_item['media_type'] == 'movie']
+    movies = [production['title'] for production in \
+        cf[0]['filmography'] if production['media_type'] == 'movie']
     assert 'Interstellar' in movies
-    tv_shows = [screen_item['name'] for screen_item in \
-        cf[0]['filmography'] if screen_item['media_type'] == 'tv']
+    tv_shows = [production['name'] for production in \
+        cf[0]['filmography'] if production['media_type'] == 'tv']
     assert 'De Wereld Draait Door' in tv_shows

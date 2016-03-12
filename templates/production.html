@@ -4,8 +4,8 @@
         <input type="search" name="q" placeholder="Search for a movie or TV show">
         <input type="submit" value="Go">
     </form>
-    {% if screen_item_title is not none %}
-        <h1>Cast filmographies for <strong>{{ screen_item_title }}</strong></h1>
+    {% if production_title is not none %}
+        <h1>Cast filmographies for <strong>{{ production_title }}</strong></h1>
         {% for cast_entry in cast_filmographies %}
             <p><strong>{{ cast_entry.role.name }}</strong> – {{ cast_entry.role.character }}</p>
             {% for image_metadata in cast_entry.role.images_metadata %}

@@ -14,7 +14,7 @@ import google_images
 
 
 def get_cast_filmographies_with_images(query, num_cast_members=4,
-                                       num_screen_items=4,
+                                       num_productions=4,
                                        num_images=4):
     """ Combines the cast filmographies of the screen item best match-
     ing the given query with images of the actors in their roles. Lim-
@@ -24,26 +24,26 @@ def get_cast_filmographies_with_images(query, num_cast_members=4,
     2. The cast filmographies with images, as described above.
     """
     if query is None:
-        screen_item_title = None
+        production_title = None
         cast_filmographies = None
     else:
-        screen_item, cast_filmographies = themoviedb.\
+        production, cast_filmographies = themoviedb.\
                                     get_cast_filmographies(query)
         # Fetch the title of the screen item.
         title_key = 'title' \
-            if screen_item['media_type'] == 'movie'\
+            if production['media_type'] == 'movie'\
             else 'name'
-        screen_item_title = screen_item[title_key]
+        production_title = production[title_key]
         # Limit the number of cast members.
         cast_filmographies = cast_filmographies[:num_cast_members]
         # Add a limited number of images for each of the cast member's
         # roles. Also limit the number of roles per cast member.
         for cast_entry in cast_filmographies:
             cast_entry['filmography'] = \
-                        cast_entry['filmography'][:num_screen_items]
+                        cast_entry['filmography'][:num_productions]
             cast_entry['role']['images_metadata'] = google_images.\
                                 get_search_results_metadata(
-                                    screen_item_title,
+                                    production_title,
                                     cast_entry['role']['name'],
                                     cast_entry['role']['character']
                                 )[:num_images]
@@ -56,7 +56,7 @@ def get_cast_filmographies_with_images(query, num_cast_members=4,
                                         cast_entry['role']['name'],
                                         credit['character']
                                     )[:num_images]
-    return screen_item_title, cast_filmographies
+    return production_title, cast_filmographies
 
 
 # --------------------------------------------------------------------
@@ -76,10 +76,10 @@ def shutdown_sessions(exception=None):
 @app.route('/')
 def search():
     query = request.args.get('q')
-    screen_item_title, cast_filmographies = \
+    production_title, cast_filmographies = \
         get_cast_filmographies_with_images(query)
-    return render_template('screen_item.html',
-                           screen_item_title=screen_item_title,
+    return render_template('production.html',
+                           production_title=production_title,
                            cast_filmographies=cast_filmographies)
 
 
