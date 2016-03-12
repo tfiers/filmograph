@@ -1,5 +1,5 @@
 """
-Screenkin web app.
+Filmograph web app.
 
 Lets the user search for movies, TV shows and people, and shows them
 a comprehensive graphical overview of the roles that people played in
@@ -62,7 +62,7 @@ def get_cast_filmographies_with_images(query, num_cast_members=4,
 # --------------------------------------------------------------------
 
 # Create the Flask WSGI application, our central webapp object.
-app = Flask('screenkin')
+app = Flask('filmograph')
 
 
 # Automatically remove database sessions at the end of each request
