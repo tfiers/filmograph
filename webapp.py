@@ -8,6 +8,7 @@ different productions.
 
 from settings import settings
 from flask import Flask, request, render_template
+from database import db_session
 import themoviedb
 import google_images
 
@@ -64,6 +65,14 @@ def get_cast_filmographies_with_images(query, num_cast_members=4,
 app = Flask('screenkin')
 
 
+# Automatically remove database sessions at the end of each request
+# or when the application shuts down.
+@app.teardown_appcontext
+def shutdown_sessions(exception=None):
+    db_session.remove()
+
+
+# Respond to requests at the root url.
 @app.route('/')
 def search():
     query = request.args.get('q')
