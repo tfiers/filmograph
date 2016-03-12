@@ -82,3 +82,36 @@ class Production(Base):
 
     def __repr__(self):
         return u"<Production '{}'>".format(self.title)
+
+
+
+
+
+
+# class User(Base):
+#     __tablename__ = 'users'
+
+#     id = Column(Integer, primary_key=True)
+#     name = Column(String)
+#     fullname = Column(String)
+#     password = Column(String)
+
+#     def __repr__(self):
+#         return "<User(name='{}', fullname='{}', password='{}'>"\
+#                 .format(self.name, self.fullname, self.password)
+
+# class Address(Base):
+#     __tablename__ = 'addresses'
+
+#     id = Column(Integer, primary_key=True)
+#     email_address = Column(String, nullable=False)
+#     user_id = Column(Integer, ForeignKey('users.id'))
+
+#     user = relationship("User", back_populates='addresses')
+
+#     def __repr__(self):
+#         return "<Address(email_address='{}'>"\
+#                 .format(self.email_address)
+
+# User.addresses = relationship(
+#     "Address", order_by=Address.id, back_populates="user")
