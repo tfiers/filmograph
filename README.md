@@ -12,6 +12,6 @@ Current state of the project: proof of concept.
 
 See the **[Wiki](https://github.com/tfiers/screenkin/wiki)** for setup instructions.
 
-UI Mockup:
+UI Mockup (click to zoom):
 
 ![UI Mockup](http://tomasf.be/mockup.png)
