@@ -14,4 +14,4 @@ See the **[Wiki](https://github.com/tfiers/screenkin/wiki)** for setup instructi
 
 UI Mockup (click to zoom):
 
-![UI Mockup](http://tomasf.be/mockup.png)
+![UI Mockup](http://tomasf.be/filmfacer/mockup.png)
