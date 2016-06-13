@@ -16,11 +16,11 @@ import google_images
 def get_cast_filmographies_with_images(query, num_cast_members=4,
                                        num_productions=4,
                                        num_images=4):
-    """ Combines the cast filmographies of the screen item best match-
+    """ Combines the cast filmographies of the production best match-
     ing the given query with images of the actors in their roles. Lim-
-    its the number of cast members, screen items per cast member, and
-    images per screen item to the supplied numbers. Returns two items:
-    1. The name of the screen item best matching the given query;
+    its the number of cast members, productions per cast member, and
+    images per production to the supplied numbers. Returns two items:
+    1. The name of the production best matching the given query;
     2. The cast filmographies with images, as described above.
     """
     if query is None:
@@ -29,10 +29,11 @@ def get_cast_filmographies_with_images(query, num_cast_members=4,
     else:
         production, cast_filmographies = themoviedb.\
                                     get_cast_filmographies(query)
-        # Fetch the title of the screen item.
-        title_key = 'title' \
-            if production['media_type'] == 'movie'\
-            else 'name'
+        # Fetch the title of the production.
+        if production['media_type'] == 'movie':
+            title_key = 'title'
+        else:
+            title_key = 'name'
         production_title = production[title_key]
         # Limit the number of cast members.
         cast_filmographies = cast_filmographies[:num_cast_members]

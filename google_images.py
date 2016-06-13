@@ -11,7 +11,7 @@ def get_search_results_metadata(production_name, person_name, character_name):
     including urls to the original image and to a thumbnail version.
     """
     # Clean up the search terms to compose the Google Images search url.
-    production_name  =  production_name.strip().replace(' ', '+')
+    production_name   =   production_name.strip().replace(' ', '+')
     person_name       =       person_name.strip().replace(' ', '+')
     character_name    =    character_name.strip().replace(' ', '+')
     query = u"{}+{}".format(production_name, person_name)

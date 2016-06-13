@@ -77,7 +77,7 @@ def get_cast_filmographies(query):
     for role in cast[:7]:
         filmography = get_api_response('/person/{id}/combined_credits'
                                        .format(**role))['cast']
-        # Annotate each screen item with its popularity.
+        # Annotate each production with its popularity.
         for production in filmography:
             production['popularity'] = \
                 popularities.get(production["id"], 0)
