@@ -33,31 +33,29 @@ def get_search_results_metadata(production_name, person_name, character_name):
                                   .find_all('img')
     search_results_metadata = []
     for img in search_results_img_tags:
-        # The href-attribute of the a-tag contains an url with
-        # interesting data in its query-string.
-        url_metadata = parse_qs(urlparse(img.parent['href']).query)
-        # The rest of the metadata we save is found as a json-dictionary
-        # located in the content of the div-tag immediately after the
-        # a-tag (with class 'rg_meta').
-        div_metadata = json.loads(img.parent.find_next_sibling('div').text)
+        # We find interesting metadata in a json-dictionary located in
+        # the content of the div-tag immediately after the img's 
+        # parent (an a-tag). (This div has class 'rg_meta').
+        metadata = json.loads(img.parent.find_next_sibling('div').text)
         # Create a dictionary with interesting metadata and add it to
         # the results.
         search_results_metadata.append({
-            'thumb_url':         div_metadata['tu'],
-            'thumb_width':       div_metadata['tw'],
-            'thumb_height':      div_metadata['th'],
-            'image_url':         url_metadata['imgurl'][0],
-            'image_width':       div_metadata['ow'],
-            'image_height':      div_metadata['oh'],
-            'image_type':        div_metadata['ity'],
-            'source_page_url':   url_metadata['imgrefurl'][0],
-            'source_domain':     div_metadata['isu'],
-            'title':             div_metadata['pt'],
-            'description':       div_metadata['s'],
+            'thumb_url':         metadata['tu'],
+            'thumb_width':       metadata['tw'],
+            'thumb_height':      metadata['th'],
+            'image_url':         metadata['ou'],
+            'image_width':       metadata['ow'],
+            'image_height':      metadata['oh'],
+            'image_type':        metadata['ity'],
+            'source_page_url':   metadata['ru'],
+            'source_domain':     metadata['isu'],
+            'title':             metadata['pt'],
+            'description':       metadata['s'],
             # Other possibly interesting metadata:
-            # - url_metadata's 'tbnid' & 'docid'
-            #       (== div_metadata's 'id' & 'rid')
-            # - div_metadata's 'cb', 'cl', 'cr', 'ct' (what are those?)
+            # 'cb', 'cl', 'cr', 'ct'
+            # 'itg', 'sc'
+            # (^what are those?)
+            # 'id', 'rid'   (thumb id, doc id)
         })
     return search_results_metadata
 
@@ -70,11 +68,11 @@ def get_search_results_metadata(production_name, person_name, character_name):
 #                          .
 #                          .
 #                          <div>
-#                              <a href=".."><img></a>
+#                              <a><img></a>
 #                              <div class="rg_meta">"{..}"</div>
 #                          </div>
 #                          <div>
-#                              <a href=".."><img></a>
+#                              <a><img></a>
 #                              <div class="rg_meta">"{..}"</div>
 #                          </div>
 #                          .
@@ -85,3 +83,26 @@ def get_search_results_metadata(production_name, person_name, character_name):
 #
 # Emmet shorthand:
 #   div#res>div>div>div>div>div>div>div>div>div*20>a>img^+div.rg_meta
+
+
+# Example div.rg_meta content (processed with json.loads):
+# 
+# {u'cb': 21,
+#  u'cl': 9,
+#  u'cr': 21,
+#  u'ct': 6,
+#  u'id': u'ebcXDoHn5dsLhM:',
+#  u'isu': u'meatgrinder.co',
+#  u'itg': False,
+#  u'ity': u'jpg',
+#  u'oh': 1200,
+#  u'ou': u'https://meatgrinder.co/photos/oona-chaplin/full-oona-chaplin-quantum-of-solace-4c91bca59c4b158fbbc06c2cc2384609-large-262761.jpg',
+#  u'ow': 800,
+#  u'pt': u'Full Oona Chaplin Quantum Of Solace',
+#  u'rid': u'-A2cJogE8TscFM',
+#  u'ru': u'https://meatgrinder.co/full--quantum-of-solace-oona-chaplin-262761.html',
+#  u's': u'',
+#  u'sc': 1,
+#  u'th': 275,
+#  u'tu': u'https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcRBXJz3wULp5cA6kqOyn0LEJ5je54N4cNlZ2kW3Qwn0ljrjNn-3',
+#  u'tw': 183}
