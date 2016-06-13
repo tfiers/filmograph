@@ -9,12 +9,9 @@ class Production(Base):
 
     __tablename__ = 'productions'
 
+
     # --- Core properties ---
-    # 
-    # Using the built-in types 'id' and 'type' as property names (and
-    # column names) has no effect outside of this file. The effect is
-    # that we can't use the 'id' and 'type' functions in this file
-    # anymore.
+    
     id = Column(Integer, primary_key=True)
     title = Column(String)
     type = Column(Enum('movie',
@@ -23,24 +20,33 @@ class Production(Base):
                        'season',
                        'movie_series',
                        name='ProductionTypes'))
-    # The parent for an 'episode' is a 'season', a 'tv_show' for a 
-    # 'season', and a 'movie_series' for a 'movie'.
+    # Using the built-in Python types 'id' and 'type' as property 
+    # names (and column names) has no effect outside of this file. 
+    # The effect in this file is that we can't use the 'id' and 'type' 
+    # functions in this class's scope anymore.
+
+    # Genealogy of Production instances by 'type' (child --> parent):
+    # 'episode' --> 'season' --> 'tv_show'
+    # 'movie' --> 'movie_series'
     parent_id = Column(Integer, ForeignKey('productions.id'))
-    # This is eg. '2' for the second episode of a season. 1-based.
-    sequence_no = Column(Integer)
     children = relationship('Production', back_populates='parent',
                             order_by='Production.sequence_no')
+    
+    # 1-based. This is eg. '2' for the second episode of a season.
+    sequence_no = Column(Integer)
+
     last_dedicated_fetch    = Column(DateTime)
     last_incidental_update  = Column(DateTime)
 
 
+
     # --- Ancillary 'themoviedb.org' properties ---
-    # 
+    
     adult                   = Column(Boolean)
     backdrop_path           = Column(String)
     budget                  = Column(BigInteger)
-    # We use JSONB instead of JSON, for indexing on these values.
-    # See http://stackoverflow.com/a/22910602/2611913
+    # We use JSONB instead of JSON, for faster indexing on properties
+    # of these columns. (http://stackoverflow.com/a/22910602/2611913)
     episode_runtimes        = Column(JSONB)
     first_air_date          = Column(Date)
     genres                  = Column(JSONB)
@@ -82,6 +88,7 @@ class Production(Base):
 
     def __repr__(self):
         return u"<Production '{}'>".format(self.title)
+
 
 
 
