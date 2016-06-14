@@ -16,7 +16,7 @@ To insert entries:
     from database import db_session
     from data_models import Person
     matt = Person(name='Matt Damon')
-    db_session.add(p)
+    db_session.add(matt)
     db_session.commit()
     # Close the handle to the database.
     db_session.remove()
