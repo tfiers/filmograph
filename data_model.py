@@ -4,44 +4,46 @@ from sqlalchemy import (Column, Integer, String, Enum, ForeignKey,
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import relationship
 
+
 class Production(Base):
-    """ Movies, TV shows, et cetera. """
+    """ Movies, TV shows, etc. """
 
     __tablename__ = 'productions'
 
-
-    # --- Core properties ---
-    
-    id = Column(Integer, primary_key=True)
-    title = Column(String)
-    type = Column(Enum('movie',
-                       'tv_show',
-                       'episode',
-                       'season',
-                       'movie_series',
-                       name='ProductionTypes'))
-    # Using the built-in Python types 'id' and 'type' as property 
-    # names (and column names) has no effect outside of this file. 
-    # The effect in this file is that we can't use the 'id' and 'type' 
-    # functions in this class's scope anymore.
-
-    # Genealogy of Production instances by 'type' (child --> parent):
-    # 'episode' --> 'season' --> 'tv_show'
-    # 'movie' --> 'movie_series'
-    parent_id = Column(Integer, ForeignKey('productions.id'))
-    children = relationship('Production', back_populates='parent',
-                            order_by='Production.sequence_no')
-    
+    # ---------------------- Core properties -------------------------
+    #
+    id                      = Column(Integer, primary_key=True)
+    title                   = Column(String)
+    type                    = Column(Enum('movie',
+                                          'tv_show',
+                                          'episode',
+                                          'season',
+                                          'movie_series',
+                                          name='ProductionTypes'))
+    # Using the built-in Python types 'id' and 'type' as property
+    # names (and column names) has no effect outside of this class.
+    # The effect in this class is that we can't use the 'id' and
+    # 'type' functions in this class's scope anymore.
+    #
+    # Genealogy of Production instances by 'type'
+    # (using the notation: child --> parent):
+    #   'episode' --> 'season' --> 'tv_show'
+    #   'movie' --> 'movie_series'
+    parent_id               = Column(Integer,
+                                     ForeignKey('productions.id'))
+    children                = relationship('Production',
+                                    back_populates='parent',
+                                    order_by='Production.sequence_no')
+    #
     # 1-based. This is eg. '2' for the second episode of a season.
-    sequence_no = Column(Integer)
-
+    sequence_no             = Column(Integer)
+    #
     last_dedicated_fetch    = Column(DateTime)
     last_incidental_update  = Column(DateTime)
 
 
-
-    # --- Ancillary 'themoviedb.org' properties ---
-    
+    # ------------ Ancillary 'themoviedb.org' properties -------------
+    #
     adult                   = Column(Boolean)
     backdrop_path           = Column(String)
     budget                  = Column(BigInteger)
@@ -76,7 +78,7 @@ class Production(Base):
     video                   = Column(Boolean)
     vote_average            = Column(Float)
     vote_count              = Column(Integer)
-
+    #
     alternative_titles      = Column(JSONB)
     content_ratings         = Column(JSONB)
     keywords                = Column(JSONB)
