@@ -38,6 +38,9 @@ class Production(Base):
     # 1-based. This is eg. '2' for the second episode of a season.
     sequence_no             = Column(Integer)
     #
+    credits                 = relationship('Role',
+                                    back_populates='production')
+    #
     last_dedicated_fetch    = Column(DateTime)
     last_incidental_update  = Column(DateTime)
 
@@ -93,34 +96,148 @@ class Production(Base):
 
 
 
+class Person(Base):
+    """ A real-life person. """
+
+    __tablename__ = 'people'
+
+    # ---------------------- Core properties -------------------------
+    #
+    # Same remark on 'id' as in 'Production'.
+    id                      = Column(Integer, primary_key=True)
+    name                    = Column(String)
+    #
+    credits                 = relationship('Role',
+                                            back_populates='person')
+    #
+    last_dedicated_fetch    = Column(DateTime)
+    last_incidental_update  = Column(DateTime)
+
+
+    # ------------ Ancillary 'themoviedb.org' properties -------------
+    #
+    adult                   = Column(Boolean)
+    # JSONB again, see 'Production'.
+    also_known_as           = Column(JSONB)
+    biography               = Column(String)
+    birthday                = Column(Date)
+    deathday                = Column(Date)
+    homepage                = Column(String)
+    tmdb_id                 = Column(Integer)
+    imdb_id                 = Column(String)
+    place_of_birth          = Column(String)
+    popularity              = Column(Float)
+    profile_path            = Column(String)
+    #
+    external_ids            = Column(JSONB)
+
+
+    def __repr__(self):
+        return u"<Person '{}'>".format(self.name)
 
 
 
+class Role(Base):
+    """ A character in a movie, the director of an episode, etc. """
 
-# class User(Base):
-#     __tablename__ = 'users'
+    __tablename__ = 'roles'
 
-#     id = Column(Integer, primary_key=True)
-#     name = Column(String)
-#     fullname = Column(String)
-#     password = Column(String)
+    # ---------------------- Core properties -------------------------
+    #
+    # Same remark on 'id' as in 'Production'.
+    id                      = Column(Integer, primary_key=True)
+    # 'name' can be the name of the character ('Harry Potter')
+    # or the title of the job ('Executive Producer').
+    name                    = Column(String)
+    # 'department' is 'cast' for characters, or anything else for
+    # crewmembers (eg: 'Editing', 'Camera', or 'Art'.)
+    department              = Column(String)
+    #
+    production_id           = Column(Integer,
+                                     ForeignKey('productions.id'))
+    production              = relationship('Production',
+                                           back_populates='credits')
+    person_id               = Column(Integer,
+                                     ForeignKey('people.id'))
+    person                  = relationship('Person',
+                                           back_populates='credits')
+    #
+    last_dedicated_fetch    = Column(DateTime)
+    last_incidental_update  = Column(DateTime)
 
-#     def __repr__(self):
-#         return "<User(name='{}', fullname='{}', password='{}'>"\
-#                 .format(self.name, self.fullname, self.password)
+    def __repr__(self):
+        return u"<Role '{}' as '{}' for '{}'>".format(
+                 self.person.name,
+                 self.title,
+                 self.production.title)
 
-# class Address(Base):
-#     __tablename__ = 'addresses'
 
-#     id = Column(Integer, primary_key=True)
-#     email_address = Column(String, nullable=False)
-#     user_id = Column(Integer, ForeignKey('users.id'))
 
-#     user = relationship("User", back_populates='addresses')
+class Image(Base):
+    """ Points to an image file
+    (or multiple versions of this same image."""
 
-#     def __repr__(self):
-#         return "<Address(email_address='{}'>"\
-#                 .format(self.email_address)
+    __tablename__ = 'images'
 
-# User.addresses = relationship(
-#     "Address", order_by=Address.id, back_populates="user")
+    # Same remark on 'id' and 'type' as in 'Production'.
+    id                      = Column(Integer, primary_key=True)
+    type                    = Column(Enum('poster',
+                                          'screencap',
+                                          'photo',
+                                          'tmdb_backdrop',
+                                          name='ImageTypes'))
+    original_url            = Column(String)
+    #
+    associations            = relationship('ImageAssociation',
+                                           back_populates='image')
+    #
+    last_dedicated_fetch    = Column(DateTime)
+    #
+    original_width          = Column(Integer)
+    original_height         = Column(Integer)
+    original_filetype       = Column(String)
+    thumb_url               = Column(String)
+    thumb_width             = Column(Integer)
+    thumb_height            = Column(Integer)
+    source_page_url         = Column(String)
+    source_domain           = Column(String)
+    Google_title            = Column(String)
+    Google_description      = Column(String)
+    # JSONB again, see 'Production'.
+    other_data              = Column(JSONB)
+
+    def __repr__(self):
+        return u"<Image at {}>".format(self.original_url)
+
+
+
+class ImageAssociation(Base):
+    """ Links a Production, a Role or a Person with an Image. """
+
+    __tablename__ = 'image_associations'
+
+    # Same remark on 'id' as in 'Production'.
+    id                      = Column(Integer, primary_key=True)
+    #
+    image_id                = Column(Integer,
+                                     ForeignKey('images.id'))
+    image                   = relationship('Image',
+                                    back_populates='associations')
+    #
+    last_dedicated_fetch    = Column(DateTime)
+    #
+    # Position in the Google Image search results. 1-based.
+    Google_position         = Column(Integer)
+    upvotes                 = Column(Integer)
+    downvotes               = Column(Integer)
+
+    # Maybe also, for associations with Roles:
+    # whether we Google Image searched for:
+    # <person name> + <production title>
+    # or
+    # <character name> + <production title>
+
+    def __repr__(self):
+        name = "TITLE/NAME OF OBJECT"
+        return u"<ImageAssociation between '{}' and '{}'>".format(
+                 name, self.image.original_url)
