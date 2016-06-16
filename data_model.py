@@ -157,6 +157,7 @@ class Role(Base):
                                      ForeignKey('productions.id'))
     production              = relationship('Production',
                                            back_populates='credits')
+    #
     person_id               = Column(Integer,
                                      ForeignKey('people.id'))
     person                  = relationship('Person',
@@ -164,6 +165,9 @@ class Role(Base):
     #
     last_dedicated_fetch    = Column(DateTime)
     last_incidental_update  = Column(DateTime)
+
+    # Only for TV
+    tmdb_id                 = Column(String)
 
     def __repr__(self):
         return u"<Role '{}' as '{}' for '{}'>".format(
