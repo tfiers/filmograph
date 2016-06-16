@@ -29,8 +29,10 @@ class Production(Base):
     # (using the notation: child --> parent):
     #   'episode' --> 'season' --> 'tv_show'
     #   'movie' --> 'movie_series'
+    # We index on the following column to find children in O(1) time.
     parent_id               = Column(Integer,
-                                     ForeignKey('productions.id'))
+                                     ForeignKey('productions.id'),
+                                     index=True)
     children                = relationship('Production',
                                     back_populates='parent',
                                     order_by='Production.sequence_no')
@@ -153,13 +155,19 @@ class Role(Base):
     # crewmembers (eg: 'Editing', 'Camera', or 'Art'.)
     department              = Column(String)
     #
+    # On the indexes: finding all roles of a person or of a production
+    # is one of the primary functions of the application. Indexing
+    # on these columns makes these lookups faster. Also note: indexes
+    # are not automatically created on foreign keys.
     production_id           = Column(Integer,
-                                     ForeignKey('productions.id'))
+                                     ForeignKey('productions.id'),
+                                     index=True)
     production              = relationship('Production',
                                            back_populates='credits')
     #
     person_id               = Column(Integer,
-                                     ForeignKey('people.id'))
+                                     ForeignKey('people.id'),
+                                     index=True)
     person                  = relationship('Person',
                                            back_populates='credits')
     #
@@ -240,6 +248,9 @@ class ImageAssociation(Base):
     # <person name> + <production title>
     # or
     # <character name> + <production title>
+
+    # Don't forget to put an index on the foreign key to the 
+    # image associatables.
 
     def __repr__(self):
         name = "TITLE/NAME OF OBJECT"
