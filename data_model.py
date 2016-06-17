@@ -6,7 +6,6 @@ from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 
 
-
 class TimestampMixin(object):
     # This answer recommends 'server_default' instead of 'default':
     # http://stackoverflow.com/a/33532154/2611913
@@ -15,7 +14,6 @@ class TimestampMixin(object):
                           server_default=func.now())
     time_updated = Column(DateTime(timezone=True),
                           onupdate=func.now())
-
 
 
 class LastAPIRequestMixin(object):
