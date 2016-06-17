@@ -3,9 +3,20 @@ from sqlalchemy import (Column, Integer, String, Enum, ForeignKey,
                         Boolean, BigInteger, Date, Float, DateTime)
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import relationship
+from sqlalchemy.sql import func
 
 
-class Production(Base):
+class TimestampMixin(object):
+    # This answer recommends 'server_default' instead of 'default':
+    # http://stackoverflow.com/a/33532154/2611913
+    # We create PostgreSQL 'TIMESTAMPs WITH TIME ZONE'.
+    time_created = Column(DateTime(timezone=True),
+                          server_default=func.now())
+    time_updated = Column(DateTime(timezone=True),
+                          onupdate=func.now())
+
+
+class Production(TimestampMixin, Base):
     """ Movies, TV shows, etc. """
 
     __tablename__ = 'productions'
@@ -98,7 +109,7 @@ class Production(Base):
 
 
 
-class Person(Base):
+class Person(TimestampMixin, Base):
     """ A real-life person. """
 
     __tablename__ = 'people'
@@ -139,7 +150,7 @@ class Person(Base):
 
 
 
-class Role(Base):
+class Role(TimestampMixin, Base):
     """ A character in a movie, the director of an episode, etc. """
 
     __tablename__ = 'roles'
@@ -185,7 +196,7 @@ class Role(Base):
 
 
 
-class Image(Base):
+class Image(TimestampMixin, Base):
     """ Points to an image file
     (or multiple versions of this same image."""
 
@@ -202,8 +213,6 @@ class Image(Base):
     #
     associations            = relationship('ImageAssociation',
                                            back_populates='image')
-    #
-    last_dedicated_fetch    = Column(DateTime)
     #
     original_width          = Column(Integer)
     original_height         = Column(Integer)
@@ -223,7 +232,7 @@ class Image(Base):
 
 
 
-class ImageAssociation(Base):
+class ImageAssociation(TimestampMixin, Base):
     """ Links a Production, a Role or a Person with an Image. """
 
     __tablename__ = 'image_associations'
@@ -235,8 +244,6 @@ class ImageAssociation(Base):
                                      ForeignKey('images.id'))
     image                   = relationship('Image',
                                     back_populates='associations')
-    #
-    last_dedicated_fetch    = Column(DateTime)
     #
     # Position in the Google Image search results. 1-based.
     Google_position         = Column(Integer)
