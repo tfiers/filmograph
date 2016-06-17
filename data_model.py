@@ -22,7 +22,7 @@ class LastAPIRequestMixin(object):
     # When was the last time we sent a request specifically for this
     # object?
     last_dedicated_fetch    = Column(DateTime(timezone=True))
-    # When was the last time this some info on this object was 
+    # When was the last time some info on this object was
     # encountered when we sent a request for another object?
     last_incidental_update  = Column(DateTime(timezone=True))
 
