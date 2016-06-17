@@ -27,7 +27,6 @@ class LastAPIRequestMixin(object):
     last_incidental_update  = Column(DateTime(timezone=True))
 
 
-
 class Production(Base, TimestampMixin, LastAPIRequestMixin):
     """ Movies, TV shows, etc. """
 
@@ -65,7 +64,6 @@ class Production(Base, TimestampMixin, LastAPIRequestMixin):
     #
     credits                 = relationship('Role',
                                     back_populates='production')
-
 
     # ------------ Ancillary 'themoviedb.org' properties -------------
     #
@@ -112,7 +110,6 @@ class Production(Base, TimestampMixin, LastAPIRequestMixin):
     translations            = Column(JSONB)
     videos                  = Column(JSONB)
 
-
     def __repr__(self):
         return u"<Production '{}'>".format(self.title)
 
@@ -132,7 +129,6 @@ class Person(Base, TimestampMixin, LastAPIRequestMixin):
     credits                 = relationship('Role',
                                             back_populates='person')
 
-
     # ------------ Ancillary 'themoviedb.org' properties -------------
     #
     adult                   = Column(Boolean)
@@ -149,7 +145,6 @@ class Person(Base, TimestampMixin, LastAPIRequestMixin):
     profile_path            = Column(String)
     #
     external_ids            = Column(JSONB)
-
 
     def __repr__(self):
         return u"<Person '{}'>".format(self.name)
