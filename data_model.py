@@ -35,7 +35,9 @@ class Production(Base, TimestampMixin, LastAPIRequestMixin):
     # ---------------------- Core properties -------------------------
     #
     id                      = Column(Integer, primary_key=True)
-    title                   = Column(String)
+    # 'title' is a slightly more appropriate name for this column,
+    # but we choose 'name' for consistency with People and Roles.
+    name                    = Column(String)
     type                    = Column(Enum('movie',
                                           'tv_show',
                                           'episode',
@@ -93,7 +95,7 @@ class Production(Base, TimestampMixin, LastAPIRequestMixin):
     number_of_episodes      = Column(Integer)
     number_of_seasons       = Column(Integer)
     original_language       = Column(String)
-    original_title          = Column(String)
+    original_name           = Column(String)
     overview                = Column(String)
     popularity              = Column(Float)
     poster_path             = Column(String)
@@ -110,7 +112,7 @@ class Production(Base, TimestampMixin, LastAPIRequestMixin):
     vote_average            = Column(Float)
     vote_count              = Column(Integer)
     #
-    alternative_titles      = Column(JSONB)
+    alternative_names       = Column(JSONB)
     content_ratings         = Column(JSONB)
     keywords                = Column(JSONB)
     release_dates           = Column(JSONB)
@@ -119,7 +121,7 @@ class Production(Base, TimestampMixin, LastAPIRequestMixin):
     videos                  = Column(JSONB)
 
     def __repr__(self):
-        return u"<Production '{}'>".format(self.title)
+        return u"<Production '{}'>".format(self.name)
 
 
 
@@ -197,8 +199,8 @@ class Role(Base, TimestampMixin, LastAPIRequestMixin):
     def __repr__(self):
         return u"<Role '{}' as '{}' for '{}'>".format(
                  self.person.name,
-                 self.title,
-                 self.production.title)
+                 self.name,
+                 self.production.name)
 
 
 
@@ -258,14 +260,14 @@ class ImageAssociation(Base, TimestampMixin):
 
     # Maybe also, for associations with Roles:
     # whether we Google Image searched for:
-    # <person name> + <production title>
+    # <person name> + <production name>
     # or
-    # <character name> + <production title>
+    # <character name> + <production name>
 
     # Don't forget to put an index on the foreign key to the 
     # image associatables.
 
     def __repr__(self):
-        name = "TITLE/NAME OF OBJECT"
+        name = "NAME OF OBJECT"
         return u"<ImageAssociation between '{}' and '{}'>".format(
                  name, self.image.original_url)
