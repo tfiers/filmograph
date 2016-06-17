@@ -197,9 +197,9 @@ class Role(Base, TimestampMixin, LastAPIRequestMixin):
     tmdb_id                 = Column(String)
 
     def __repr__(self):
-        return u"<Role '{}' as '{}' for '{}'>".format(
-                 self.person.name,
+        return u"<Role '{}' for '{}' in '{}'>".format(
                  self.name,
+                 self.person.name,
                  self.production.name)
 
 
