@@ -28,7 +28,7 @@ class LastAPIRequestMixin(object):
 
 
 
-class Production(TimestampMixin, LastAPIRequestMixin, Base):
+class Production(Base, TimestampMixin, LastAPIRequestMixin):
     """ Movies, TV shows, etc. """
 
     __tablename__ = 'productions'
@@ -118,7 +118,7 @@ class Production(TimestampMixin, LastAPIRequestMixin, Base):
 
 
 
-class Person(TimestampMixin, LastAPIRequestMixin, Base):
+class Person(Base, TimestampMixin, LastAPIRequestMixin):
     """ A real-life person. """
 
     __tablename__ = 'people'
@@ -156,7 +156,7 @@ class Person(TimestampMixin, LastAPIRequestMixin, Base):
 
 
 
-class Role(TimestampMixin, LastAPIRequestMixin, Base):
+class Role(Base, TimestampMixin, LastAPIRequestMixin):
     """ A character in a movie, the director of an episode, etc. """
 
     __tablename__ = 'roles'
@@ -199,7 +199,7 @@ class Role(TimestampMixin, LastAPIRequestMixin, Base):
 
 
 
-class Image(TimestampMixin, Base):
+class Image(Base, TimestampMixin):
     """ Points to an image file
     (or multiple versions of this same image."""
 
@@ -235,7 +235,7 @@ class Image(TimestampMixin, Base):
 
 
 
-class ImageAssociation(TimestampMixin, Base):
+class ImageAssociation(Base, TimestampMixin):
     """ Links a Production, a Role or a Person with an Image. """
 
     __tablename__ = 'image_associations'
