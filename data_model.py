@@ -9,7 +9,9 @@ from sqlalchemy.sql import func
 class TimestampMixin(object):
     # This answer recommends 'server_default' instead of 'default':
     # http://stackoverflow.com/a/33532154/2611913
-    # We create PostgreSQL 'TIMESTAMPs WITH TIME ZONE'.
+    # This "creates a default generator on the database side."
+    # (http://docs.sqlalchemy.org/en/latest/core/metadata.html)
+    # We create PostgreSQL 'TIMESTAMP WITH TIME ZONE' values.
     time_created = Column(DateTime(timezone=True),
                           server_default=func.now())
     time_updated = Column(DateTime(timezone=True),
