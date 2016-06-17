@@ -55,6 +55,14 @@ class Production(Base, TimestampMixin, LastAPIRequestMixin):
     parent_id               = Column(Integer,
                                      ForeignKey('productions.id'),
                                      index=True)
+    # The 'remote_side' argument specifies this direction of the
+    # relationship as the many-to-one direction (many children have
+    # one parent).
+    parent                  = relationship('Production',
+                                    back_populates='children',
+                                    remote_side=[id])
+    # (Default direction is one-to-many, so no extra directive
+    # is needed).
     children                = relationship('Production',
                                     back_populates='parent',
                                     order_by='Production.sequence_no')
