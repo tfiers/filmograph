@@ -6,6 +6,7 @@ from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 
 
+
 class TimestampMixin(object):
     # This answer recommends 'server_default' instead of 'default':
     # http://stackoverflow.com/a/33532154/2611913
@@ -16,7 +17,18 @@ class TimestampMixin(object):
                           onupdate=func.now())
 
 
-class Production(TimestampMixin, Base):
+
+class LastAPIRequestMixin(object):
+    # When was the last time we sent a request specifically for this
+    # object?
+    last_dedicated_fetch    = Column(DateTime(timezone=True))
+    # When was the last time this some info on this object was 
+    # encountered when we sent a request for another object?
+    last_incidental_update  = Column(DateTime(timezone=True))
+
+
+
+class Production(TimestampMixin, LastAPIRequestMixin, Base):
     """ Movies, TV shows, etc. """
 
     __tablename__ = 'productions'
@@ -53,9 +65,6 @@ class Production(TimestampMixin, Base):
     #
     credits                 = relationship('Role',
                                     back_populates='production')
-    #
-    last_dedicated_fetch    = Column(DateTime)
-    last_incidental_update  = Column(DateTime)
 
 
     # ------------ Ancillary 'themoviedb.org' properties -------------
@@ -109,7 +118,7 @@ class Production(TimestampMixin, Base):
 
 
 
-class Person(TimestampMixin, Base):
+class Person(TimestampMixin, LastAPIRequestMixin, Base):
     """ A real-life person. """
 
     __tablename__ = 'people'
@@ -122,9 +131,6 @@ class Person(TimestampMixin, Base):
     #
     credits                 = relationship('Role',
                                             back_populates='person')
-    #
-    last_dedicated_fetch    = Column(DateTime)
-    last_incidental_update  = Column(DateTime)
 
 
     # ------------ Ancillary 'themoviedb.org' properties -------------
@@ -150,7 +156,7 @@ class Person(TimestampMixin, Base):
 
 
 
-class Role(TimestampMixin, Base):
+class Role(TimestampMixin, LastAPIRequestMixin, Base):
     """ A character in a movie, the director of an episode, etc. """
 
     __tablename__ = 'roles'
@@ -181,9 +187,6 @@ class Role(TimestampMixin, Base):
                                      index=True)
     person                  = relationship('Person',
                                            back_populates='credits')
-    #
-    last_dedicated_fetch    = Column(DateTime)
-    last_incidental_update  = Column(DateTime)
 
     # Only for TV
     tmdb_id                 = Column(String)
