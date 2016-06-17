@@ -249,7 +249,8 @@ class ImageAssociation(Base, TimestampMixin):
     id                      = Column(Integer, primary_key=True)
     #
     image_id                = Column(Integer,
-                                     ForeignKey('images.id'))
+                                     ForeignKey('images.id'),
+                                     index=True)
     image                   = relationship('Image',
                                     back_populates='associations')
     #
