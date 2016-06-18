@@ -16,12 +16,20 @@ to reflect the current state of a real 'secrets.json' file.
 (As a bonus, this also validates the json in the secrets file).
 """
 
+import os
 import json
 from collections import OrderedDict
 
+def absolute(path):
+    """ Make the given path, relative to the current file, absolute.
+    This means this file can also be executed from a working directory
+    that is not the one this file resides in.
+    """
+    return os.path.join(os.path.dirname(__file__), path)
+
 # Note: make sure SECRET_SETTINGS_FILE is gitignored.
-SECRET_SETTINGS_FILE        = 'secrets/secrets.json'
-DUMMY_SECRET_SETTINGS_FILE  = 'secrets/dummy_secrets.json'
+SECRET_SETTINGS_FILE        = absolute('./secrets/secrets.json')
+DUMMY_SECRET_SETTINGS_FILE  = absolute('./secrets/dummy_secrets.json')
 
 settings = {}
 with open(SECRET_SETTINGS_FILE) as f:
