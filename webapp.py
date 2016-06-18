@@ -2,8 +2,7 @@
 Filmograph web app.
 
 Lets the user search for movies, TV shows and people, and shows them
-a comprehensive graphical overview of the roles that people played in
-different productions.
+images of roles that people played in different productions.
 """
 
 from settings import settings
