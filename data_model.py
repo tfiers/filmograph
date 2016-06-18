@@ -55,7 +55,6 @@ class ImageAssociatable(Base,
     }
 
 
-
 class Production(ImageAssociatable,
                  TimestampMixin,
                  LastAPIRequestMixin):
@@ -153,46 +152,6 @@ class Production(ImageAssociatable,
         return u"<Production '{}'>".format(self.name)
 
 
-
-class Person(ImageAssociatable,
-             TimestampMixin,
-             LastAPIRequestMixin):
-    """ A real-life person.
-    """
-    __tablename__ = 'person'
-
-    # ---------------------- Core properties -------------------------
-    #
-    # Same remark on 'id' as in 'ImageAssociatable'.
-    id                   = Column(Integer,
-                                  ForeignKey('image_associatable.id'),
-                                  primary_key=True)
-    __mapper_args__      = { 'polymorphic_identity': 'person' }
-    #
-    credits              = relationship('Role',
-                                         back_populates='person')
-
-    # ------------ Ancillary 'themoviedb.org' properties -------------
-    #
-    adult                = Column(Boolean)
-    # JSONB again, see 'Production'.
-    also_known_as        = Column(JSONB)
-    biography            = Column(String)
-    birthday             = Column(Date)
-    deathday             = Column(Date)
-    homepage             = Column(String)
-    tmdb_id              = Column(Integer)
-    imdb_id              = Column(String)
-    place_of_birth       = Column(String)
-    popularity           = Column(Float)
-    profile_path         = Column(String)
-    #
-    external_ids         = Column(JSONB)
-
-    def __repr__(self):
-        return u"<Person '{}'>".format(self.name)
-
-
 class Role(ImageAssociatable,
            TimestampMixin,
            LastAPIRequestMixin):
@@ -237,6 +196,45 @@ class Role(ImageAssociatable,
                  self.name,
                  self.person.name,
                  self.production.name)
+
+
+class Person(ImageAssociatable,
+             TimestampMixin,
+             LastAPIRequestMixin):
+    """ A real-life person.
+    """
+    __tablename__ = 'person'
+
+    # ---------------------- Core properties -------------------------
+    #
+    # Same remark on 'id' as in 'ImageAssociatable'.
+    id                   = Column(Integer,
+                                  ForeignKey('image_associatable.id'),
+                                  primary_key=True)
+    __mapper_args__      = { 'polymorphic_identity': 'person' }
+    #
+    credits              = relationship('Role',
+                                         back_populates='person')
+
+    # ------------ Ancillary 'themoviedb.org' properties -------------
+    #
+    adult                = Column(Boolean)
+    # JSONB again, see 'Production'.
+    also_known_as        = Column(JSONB)
+    biography            = Column(String)
+    birthday             = Column(Date)
+    deathday             = Column(Date)
+    homepage             = Column(String)
+    tmdb_id              = Column(Integer)
+    imdb_id              = Column(String)
+    place_of_birth       = Column(String)
+    popularity           = Column(Float)
+    profile_path         = Column(String)
+    #
+    external_ids         = Column(JSONB)
+
+    def __repr__(self):
+        return u"<Person '{}'>".format(self.name)
 
 
 class Image(Base,
