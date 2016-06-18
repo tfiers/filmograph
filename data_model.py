@@ -27,35 +27,31 @@ class LastAPIRequestMixin(object):
     last_incidental_update = Column(DateTime(timezone=True))
 
 
-class ImageAssociatable(Base,
-                        TimestampMixin):
+class ImageLinkable(Base,
+                    TimestampMixin):
     """ Any object that may have images associated with it. Eg:
     A Production, which has posters, a Person, which has photos, and a
     character Role, which has screencaps.
     """
-    __tablename__ = 'image_associatable'
-    # Using the built-in Python types 'id' and 'type' as property
-    # names (and column names) has no effect outside of this class.
-    # The effect in this class is that we can't use the 'id' and
-    # 'type' functions in its scope anymore.
+    # We choose the shorter 'link' and 'linkable' throughout,
+    # instead of the (arguably) semantically clearer 'association'
+    # and 'associatable'.
+    __tablename__ = 'image_linkable'
+    #
     id                   = Column(Integer, primary_key=True)
-    type                 = Column(String)
-    # For movies (and for non-cast roles), 'title' is a slightly more
-    # appropriate column name. We choose for consistency by going with
-    # 'name' though.
-    name                 = Column(String)
-    # 
-    image_associations   = relationship('ImageAssociation',
-                                        back_populates='associatable')
-    # 
+    linkable_type        = Column(String)
+    #
+    image_links          = relationship('ImageLink',
+                                  back_populates='linked')
+    #
     # Set-up joined table inheritance.
     __mapper_args__ = {
-        'polymorphic_on': type,
-        'polymorphic_identity': 'image_associatable'
+        'polymorphic_on': linkable_type,
+        'polymorphic_identity': 'image_linkable'
     }
 
 
-class Production(ImageAssociatable,
+class Production(ImageLinkable,
                  TimestampMixin,
                  LastAPIRequestMixin):
     """ Movies, TV shows, etc.
@@ -64,12 +60,16 @@ class Production(ImageAssociatable,
 
     # ---------------------- Core properties -------------------------
     #
-    # Same remark on 'id' and 'type' as in 'ImageAssociatable'.
     id                   = Column(Integer,
-                                  ForeignKey('image_associatable.id'),
+                                  ForeignKey('image_linkable.id'),
                                   primary_key=True)
+    # 'title' might be slightly more appropriate for things like
+    # movies, but we choose 'name' for consistency with Role and
+    # Person.
+    name                 = Column(String)
+    #
     __mapper_args__      = { 'polymorphic_identity': 'production' }
-    # 
+    #
     type                 = Column(Enum('movie',
                                        'tv_show',
                                        'episode',
@@ -89,19 +89,22 @@ class Production(ImageAssociatable,
     # relationship as the many-to-one direction (many children have
     # one parent).
     parent               = relationship('Production',
-                                    back_populates='children',
-                                    remote_side=[id])
+                                  back_populates='children',
+                                  foreign_keys=[parent_id],
+                                  remote_side=[id])
     # (Default direction is one-to-many, so no extra directive
     # is needed).
     children             = relationship('Production',
-                                    back_populates='parent',
-                                    order_by='Production.sequence_no')
+                                  back_populates='parent',
+                                  foreign_keys=[parent_id],
+                                  order_by='Production.sequence_no')
     #
     # 1-based. This is eg. '2' for the second episode of a season.
     sequence_no          = Column(Integer)
     #
     credits              = relationship('Role',
-                                    back_populates='production')
+                                  back_populates='production',
+                                  foreign_keys='[Role.production_id]')
 
     # ------------ Ancillary 'themoviedb.org' properties -------------
     #
@@ -152,7 +155,7 @@ class Production(ImageAssociatable,
         return u"<Production '{}'>".format(self.name)
 
 
-class Role(ImageAssociatable,
+class Role(ImageLinkable,
            TimestampMixin,
            LastAPIRequestMixin):
     """ A character in a movie, the director of an episode, etc.
@@ -161,13 +164,13 @@ class Role(ImageAssociatable,
 
     # ---------------------- Core properties -------------------------
     #
-    # Same remark on 'id' as in 'ImageAssociatable'.
     id                   = Column(Integer,
-                                  ForeignKey('image_associatable.id'),
+                                  ForeignKey('image_linkable.id'),
                                   primary_key=True)
     __mapper_args__      = { 'polymorphic_identity': 'role' }
-    # The inherited column 'name' can be the name of the character
-    # ('Harry Potter') or the title of the job ('Executive Producer').
+    # 'name' can be the name of the character ('Harry Potter')
+    # or the title of the job ('Executive Producer').
+    name                 = Column(String)
     # 'department' is 'cast' for characters, or anything else for
     # crewmembers (eg: 'Editing', 'Camera', or 'Art'.)
     department           = Column(String)
@@ -180,13 +183,15 @@ class Role(ImageAssociatable,
                                   ForeignKey('production.id'),
                                   index=True)
     production           = relationship('Production',
-                                         back_populates='credits')
+                                         back_populates='credits',
+                                         foreign_keys=[production_id])
     #
     person_id            = Column(Integer,
                                   ForeignKey('person.id'),
                                   index=True)
     person               = relationship('Person',
-                                         back_populates='credits')
+                                         back_populates='credits',
+                                         foreign_keys=[person_id])
 
     # Only for TV
     tmdb_id              = Column(String)
@@ -198,7 +203,7 @@ class Role(ImageAssociatable,
                  self.production.name)
 
 
-class Person(ImageAssociatable,
+class Person(ImageLinkable,
              TimestampMixin,
              LastAPIRequestMixin):
     """ A real-life person.
@@ -207,14 +212,15 @@ class Person(ImageAssociatable,
 
     # ---------------------- Core properties -------------------------
     #
-    # Same remark on 'id' as in 'ImageAssociatable'.
     id                   = Column(Integer,
-                                  ForeignKey('image_associatable.id'),
+                                  ForeignKey('image_linkable.id'),
                                   primary_key=True)
+    name                 = Column(String)
     __mapper_args__      = { 'polymorphic_identity': 'person' }
     #
     credits              = relationship('Role',
-                                         back_populates='person')
+                                  back_populates='person',
+                                  foreign_keys='[Role.person_id]')
 
     # ------------ Ancillary 'themoviedb.org' properties -------------
     #
@@ -244,7 +250,6 @@ class Image(Base,
     """
     __tablename__ = 'image'
 
-    # Same remark on 'id' and 'type' as in 'ImageAssociatable'.
     id                   = Column(Integer, primary_key=True)
     type                 = Column(Enum('poster',
                                        'screencap',
@@ -253,7 +258,7 @@ class Image(Base,
                                        name='ImageTypes'))
     original_url         = Column(String)
     #
-    associations         = relationship('ImageAssociation',
+    links                = relationship('ImageLink',
                                          back_populates='image')
     #
     original_width       = Column(Integer)
@@ -273,38 +278,37 @@ class Image(Base,
         return u"<Image at {}>".format(self.original_url)
 
 
-class ImageAssociation(Base,
-                       TimestampMixin):
-    """ Links a Production, a Role or a Person with an Image.
+class ImageLink(Base,
+                TimestampMixin):
+    """ Associates a Production, a Role or a Person with an Image.
     """
-    __tablename__ = 'image_association'
+    __tablename__ = 'image_link'
 
-    # Same remark on 'id' as in 'ImageAssociatable'.
     id                   = Column(Integer, primary_key=True)
     #
     image_id             = Column(Integer,
                                   ForeignKey('image.id'),
                                   index=True)
     image                = relationship('Image',
-                                  back_populates='associations')
+                                  back_populates='links')
     #
-    associatable_id      = Column(Integer,
-                                  ForeignKey('image_associatable.id'),
+    linkable_id          = Column(Integer,
+                                  ForeignKey('image_linkable.id'),
                                   index=True)
-    associatable         = relationship('ImageAssociatable',
-                                  back_populates='image_associations')
-    # 
+    linked               = relationship('ImageLinkable',
+                                  back_populates='image_links')
+    #
     # Position in the Google Image search results. 1-based.
     Google_position      = Column(Integer)
     upvotes              = Column(Integer)
     downvotes            = Column(Integer)
 
-    # Maybe also, for associations with Roles:
+    # Maybe also, for links with Roles:
     # whether we Google Image searched for:
     # <person name> + <production name>
     # or
     # <character name> + <production name>
 
     def __repr__(self):
-        return u"<ImageAssociation between '{}' and '{}'>".format(
-                 self.associatable.name, self.image.original_url)
+        return u"<ImageLink between '{}' and '{}'>".format(
+                 self.linked.name, self.image.original_url)
