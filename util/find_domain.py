@@ -71,8 +71,8 @@ def test_dotcom_default():
 
 
 def test_check():
-    assert check('facebook.com') == 'unavailable'
-    assert check('xwquieoj.com') == 'available'
+    assert check('facebook.com') == '/'
+    assert check('xwquieoj.com') == 'ok'
 
 
 def cli():
