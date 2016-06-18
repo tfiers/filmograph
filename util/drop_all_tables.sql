@@ -1,0 +1,1 @@
+﻿drop table image, image_linkable, image_link, person, production, role cascade

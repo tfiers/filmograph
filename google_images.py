@@ -5,16 +5,16 @@ from urlparse import urlparse, parse_qs
 import json
 
 
-def get_search_results_metadata(screen_item_name, person_name, character_name):
+def get_search_results_metadata(production_name, person_name, character_name):
     """ Searches Google Images for the given terms and returns a list
     of dictionaries containing metadata about each search result,
     including urls to the original image and to a thumbnail version.
     """
     # Clean up the search terms to compose the Google Images search url.
-    screen_item_name  =  screen_item_name.strip().replace(' ', '+')
+    production_name   =   production_name.strip().replace(' ', '+')
     person_name       =       person_name.strip().replace(' ', '+')
     character_name    =    character_name.strip().replace(' ', '+')
-    query = u"{}+{}".format(screen_item_name, person_name)
+    query = u"{}+{}".format(production_name, person_name)
     url = u'https://www.google.com/search?tbm=isch&q={}'.format(query)
     # Pose as a Firefox browser. (Otherwise we get an older version of
     # the Google Search app, intended for non-javascript browsers, with

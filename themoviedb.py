@@ -53,8 +53,8 @@ def cache_popularities(movie_pages=5, tv_show_pages=2):
     """
     movies = get_all_entries('/movie/popular', end_page=movie_pages)
     tv_shows = get_all_entries('/tv/popular', end_page=tv_show_pages)
-    for screen_item in movies + tv_shows:
-        popularities[screen_item['id']] = screen_item['popularity']
+    for production in movies + tv_shows:
+        popularities[production['id']] = production['popularity']
     logger.info(('Cached the {} most popular movies and {} most '
                  'popular TV shows.').format(len(movies),
                                              len(tv_shows)))
@@ -77,18 +77,18 @@ def get_cast_filmographies(query):
     for role in cast[:7]:
         filmography = get_api_response('/person/{id}/combined_credits'
                                        .format(**role))['cast']
-        # Annotate each screen item with its popularity.
-        for screen_item in filmography:
-            screen_item['popularity'] = \
-                popularities.get(screen_item["id"], 0)
+        # Annotate each production with its popularity.
+        for production in filmography:
+            production['popularity'] = \
+                popularities.get(production["id"], 0)
         # Sort on popularity, from high to low.
         filmography = sorted(filmography,
-                             key=lambda screen_item:
-                             screen_item["popularity"],
+                             key=lambda production:
+                                production["popularity"],
                              reverse=True)
         # Don't include the queried movie in the filmography.
-        filmography = filter(lambda screen_item:
-                             screen_item["id"] != first_result["id"],
+        filmography = filter(lambda production: production["id"] != \
+                                                first_result["id"],
                              filmography)
         # Add the new cast entry.
         cast_filmographies.append({'role': role,
@@ -110,20 +110,20 @@ def get_cast_filmographies_as_string(query):
             cast_entry['role']['character'],
             width,
             cast_entry['role']['name'])
-        for screen_item in cast_entry['filmography'][:5]:
-            if screen_item['media_type'] == 'movie':
+        for production in cast_entry['filmography'][:5]:
+            if production['media_type'] == 'movie':
                 s += u'{:>{}} in "{}"\n'.format(
-                    screen_item['character'],
+                    production['character'],
                     width,
-                    screen_item['title'])
-            elif screen_item['character'] != '':
+                    production['title'])
+            elif production['character'] != '':
                 s += u'{:>{}} in "{}"\n'.format(
-                    screen_item['character'],
+                    production['character'],
                     width,
-                    screen_item['name'])
+                    production['name'])
             else:
                 s += (width-8)*u' ' + u'appeared in "{}"\n'.format(
-                    screen_item['name'])
+                    production['name'])
     return s
 
 
