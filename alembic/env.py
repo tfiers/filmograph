@@ -9,7 +9,8 @@ config = context.config
 
 # Fill in the database url.
 #
-# Python importing is messy.
+# Add the app directory to the path.
+# (Python importing is messy.)
 import sys
 import os
 cur_dir = os.path.dirname(os.path.abspath(__file__))
@@ -28,7 +29,9 @@ fileConfig(config.config_file_name)
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
-target_metadata = None
+from database import Base
+import data_model
+target_metadata = Base.metadata
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
