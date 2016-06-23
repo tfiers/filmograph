@@ -1,0 +1,30 @@
+version: '2'
+
+services:
+
+    db:
+        image: postgres
+        volumes:
+            - dbvol:/var/lib/postgresql/data
+        environment:
+            - POSTGRES_PASSWORD
+        ports:
+            - '5432:5432'
+
+    broker:
+        image: rabbitmq
+
+    worker:
+        build: .
+        command: python ./worker/worker.py
+
+    web:
+        build: .
+        command: python ./webapp/webapp.py
+        ports:
+            - '80:5000'
+
+
+volumes:
+    dbvol:
+        driver: local
