@@ -7,9 +7,9 @@ images of roles that people played in different productions.
 
 from settings import settings
 from flask import Flask, request, render_template
-from database import db_session
-import themoviedb
-import google_images
+from data.database import db_session
+from scraper import themoviedb
+from scraper import google_images
 
 
 def get_cast_filmographies_with_images(query, num_cast_members=4,
@@ -62,7 +62,9 @@ def get_cast_filmographies_with_images(query, num_cast_members=4,
 # --------------------------------------------------------------------
 
 # Create the Flask WSGI application, our central webapp object.
-app = Flask('filmograph')
+# The app should be run from the main directory, eg:
+# python webapp/webapp.py
+app = Flask('filmograph', template_folder='webapp/templates')
 
 
 # Automatically remove database sessions at the end of each request

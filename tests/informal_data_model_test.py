@@ -25,9 +25,10 @@ def test_data_models():
 
     # ------------- Setup --------------------------------------------
 
-    from database import init_db, engine
+    from data.database import init_db, engine
     from sqlalchemy.orm import sessionmaker
-    from data_model import Production, Person, Role, Image, ImageLink
+    from data.data_model import (Production, Person, Role, Image, 
+                                 ImageLink)
 
     # Print generated SQL
     # See: http://docs.sqlalchemy.org/en/latest/core/engines.html#configuring-logging

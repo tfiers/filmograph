@@ -1,4 +1,4 @@
-from ..themoviedb import (get_api_response, cache_popularities, 
+from scraper.themoviedb import (get_api_response, cache_popularities, 
     get_cast_filmographies)
 
 def test_get_api_response():
