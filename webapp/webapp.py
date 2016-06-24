@@ -8,8 +8,8 @@ images of roles that people played in different productions.
 from settings import settings
 from flask import Flask, request, render_template
 from data.db_conn import db_session
-from scraper import themoviedb
-from scraper import google_images
+from miner import themoviedb
+from miner import google_images
 
 
 def get_cast_filmographies_with_images(query, num_cast_members=4,

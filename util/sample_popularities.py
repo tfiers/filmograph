@@ -1,4 +1,4 @@
-from scraper.themoviedb import get_api_response
+from miner.themoviedb import get_api_response
 from math import log10
 from numpy import logspace
 

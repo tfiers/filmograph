@@ -1,4 +1,4 @@
-from scraper.themoviedb import get_cast_filmographies
+from miner.themoviedb import get_cast_filmographies
 from collections import OrderedDict
 import json
 cf = get_cast_filmographies("the martian")

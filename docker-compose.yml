@@ -15,9 +15,9 @@ services:
     # broker:
     #     image: rabbitmq
 
-    # worker:
+    # miner:
     #     build: .
-    #     command: python ./scraper/worker.py
+    #     command: python ./miner/miner.py
 
     web:
         build: .
