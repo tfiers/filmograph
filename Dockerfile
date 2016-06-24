@@ -14,4 +14,4 @@ FROM python:2.7-onbuild
 #
 ENV PYTHONPATH $PYTHONPATH:/usr/src/app
 
-CMD ["python", "webapp.py"]
+CMD ["python", "webapp/webapp.py"]

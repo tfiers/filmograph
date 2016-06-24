@@ -16,7 +16,7 @@ services:
 
     worker:
         build: .
-        command: python ./worker/worker.py
+        command: python ./scraper/worker.py
 
     web:
         build: .
