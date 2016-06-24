@@ -20,4 +20,7 @@ services:
     web:
         build: ./app
         command: python webapp/webapp.py
-        ports: ['8000:8000']
+
+    proxy:
+        build: ./proxy
+        ports: ['80:80']

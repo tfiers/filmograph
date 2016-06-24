@@ -87,6 +87,8 @@ def search():
 
 if __name__ == '__main__':
     # Run the application on a development server.
-    app.run(host=settings['host'],
+    # Setting the host to '0.0.0.0' makes the app publicly available
+    # by listening on all public IPs, on port 8000.
+    app.run(host='0.0.0.0',
             port=8000,
             debug=True)
