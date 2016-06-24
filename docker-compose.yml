@@ -19,7 +19,10 @@ services:
 
     web:
         build: ./app
+        # For development:
         command: python webapp/webapp.py
+        # In production:
+        # command: gunicorn webapp.webapp:app -c webapp/gunicorn_conf.py
 
     # TODO: mount directory containing 'nginx.conf', so we can update
     # proxying rules without needing to restart the proxy container

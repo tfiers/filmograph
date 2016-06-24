@@ -1,5 +1,3 @@
-# Instructions for Docker to run the webapp in a container.
-
 # Parent Dockerfile:
 #
 #   http://github.com/docker-library/python/blob/master/2.7/onbuild/Dockerfile
@@ -15,5 +13,3 @@ FROM python:2.7-onbuild
 ENV PYTHONPATH $PYTHONPATH:/usr/src/app
 
 EXPOSE 8000
-
-CMD ["python", "webapp/webapp.py"]
