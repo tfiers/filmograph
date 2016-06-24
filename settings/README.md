@@ -8,7 +8,7 @@ to a developer, testing or production machine.
 `dummy_secrets.json` shows how this `secrets.json` file should be 
 structured and which key-value pairs it should contain. The dummy 
 file can be generated from a real `secrets.json` file by running 
-`settings.py` in the root directory.
+`__init__.py`.
 
-The secret settings are made available throughout the app through 
-`settings.py`.
+The secret settings are made available throughout the app as described
+in `__init__.py`.

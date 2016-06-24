@@ -6,10 +6,10 @@ Usage:
     from settings import settings
     settings['key']
 
-This includes access to secret settings, which should be saved in the 
-directory 'secrets', in a gitignored file named 'secrets.json'. The 
-file 'dummy_secrets.json' shows how this file should be structured and
-which secret keys should be defined. See 'secrets/README.md'.
+This includes access to secret settings, which should be saved in a
+gitignored file named 'secrets.json'. The file 'dummy_secrets.json'
+shows how this file should be structured and which secret keys should
+be defined. See 'settings/README.md'.
 
 Running the current file on its own will update 'dummy_secrets.json' 
 to reflect the current state of a real 'secrets.json' file.
@@ -28,8 +28,8 @@ def absolute(path):
     return os.path.join(os.path.dirname(__file__), path)
 
 # Note: make sure SECRET_SETTINGS_FILE is gitignored.
-SECRET_SETTINGS_FILE        = absolute('./secrets/secrets.json')
-DUMMY_SECRET_SETTINGS_FILE  = absolute('./secrets/dummy_secrets.json')
+SECRET_SETTINGS_FILE        = absolute('./secrets.json')
+DUMMY_SECRET_SETTINGS_FILE  = absolute('./dummy_secrets.json')
 
 settings = {}
 with open(SECRET_SETTINGS_FILE) as f:
@@ -42,7 +42,7 @@ for secret in secrets:
 # --------------------------------------------------------------------
 
 def generate_dummy_secrets():
-    """ Based on the real 'secrets/secrets.json' file, creates a dummy 
+    """ Based on the real 'secrets.json' file, creates a dummy 
     version of this file that shows how it should be structured and 
     which key-value pairs should be defined. The keys and the 
     descriptions are preserved, and the secret values are replaced by 

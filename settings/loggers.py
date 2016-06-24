@@ -1,10 +1,10 @@
 """
-Provides access to common loggers across modules (which may run in 
+Provides access to common loggers across modules (which may run in
 separate processes).
 
 Usage:
 
-    from loggers import logger
+    from settings.loggers import logger
     logger.debug('Diagnostics information')
     logger.info('Everything works as expected')
     logger.warning(('Something unexpected happened, or an error might '
