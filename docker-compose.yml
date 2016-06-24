@@ -21,6 +21,9 @@ services:
         build: ./app
         command: python webapp/webapp.py
 
+    # TODO: mount directory containing 'nginx.conf', so we can update
+    # proxying rules without needing to restart the proxy container
+    # and thus without downtime.
     proxy:
         build: ./proxy
         ports: ['80:80']
