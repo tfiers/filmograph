@@ -3,9 +3,7 @@ version: '2'
 volumes:
     dbvol: {}
 
-
 services:
-
     db:
         image: postgres
         volumes: ['dbvol:/var/lib/postgresql/data']
@@ -16,10 +14,10 @@ services:
     #     image: rabbitmq
 
     # miner:
-    #     build: .
-    #     command: python ./miner/miner.py
+    #     build: ./app
+    #     command: python miner/miner.py
 
     web:
-        build: .
-        command: python ./webapp/webapp.py
+        build: ./app
+        command: python webapp/webapp.py
         ports: ['80:5000']
