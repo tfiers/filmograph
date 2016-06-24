@@ -20,4 +20,4 @@ services:
     web:
         build: ./app
         command: python webapp/webapp.py
-        ports: ['80:5000']
+        ports: ['8000:8000']

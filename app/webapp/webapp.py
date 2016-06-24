@@ -88,4 +88,5 @@ def search():
 if __name__ == '__main__':
     # Run the application on a development server.
     app.run(host=settings['host'],
-            debug=settings['debug'])
+            port=8000,
+            debug=True)
