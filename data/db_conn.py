@@ -6,15 +6,15 @@ Usage:
 
 To initialise the database:
 
-    from database import init_db
+    from data.db_conn import init_db
     init_db()
 
 
 To insert entries:
 
     # Get existing handle or create new handle to the database.
-    from database import db_session
-    from data_models import Person
+    from data.db_conn import db_session
+    from data.data_models import Person
     matt = Person(name='Matt Damon')
     db_session.add(matt)
     db_session.commit()
@@ -24,7 +24,7 @@ To insert entries:
 
 To make queries:
 
-    from data_models import Person
+    from data.data_models import Person
     Person.query.all()
     Person.query.filter(Person.name == 'Matt Damon').first()
 

@@ -25,7 +25,7 @@ def test_data_models():
 
     # ------------- Setup --------------------------------------------
 
-    from data.database import init_db, engine
+    from data.db_conn import init_db, engine
     from sqlalchemy.orm import sessionmaker
     from data.data_model import (Production, Person, Role, Image, 
                                  ImageLink)

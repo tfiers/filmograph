@@ -8,15 +8,6 @@ from logging.config import fileConfig
 config = context.config
 
 # Fill in the database url.
-#
-# Add the app directory to the path.
-# (Python importing is messy.)
-import sys
-import os
-cur_dir = os.path.dirname(os.path.abspath(__file__))
-parent_dir = os.path.split(cur_dir)[0]
-sys.path.append(parent_dir)
-#
 from settings import settings
 url = settings.get('database_url')
 config.set_main_option('sqlalchemy.url', url)
@@ -29,8 +20,8 @@ fileConfig(config.config_file_name)
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
-from database import Base
-import data_model
+from data.db_conn import Base
+from data import data_model
 target_metadata = Base.metadata
 
 # other values from the config, defined by the needs of env.py,

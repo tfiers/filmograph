@@ -7,7 +7,7 @@ images of roles that people played in different productions.
 
 from settings import settings
 from flask import Flask, request, render_template
-from data.database import db_session
+from data.db_conn import db_session
 from scraper import themoviedb
 from scraper import google_images
 

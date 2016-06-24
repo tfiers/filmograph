@@ -1,4 +1,4 @@
-from database import Base
+from db_conn import Base
 from sqlalchemy import (Column, Integer, String, Enum, ForeignKey,
                         Boolean, BigInteger, Date, Float, DateTime)
 from sqlalchemy.dialects.postgresql import JSONB
