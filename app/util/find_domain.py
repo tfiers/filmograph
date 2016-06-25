@@ -19,46 +19,6 @@ def check(domain):
     else:
         return '/'
 
-# Some particles:
-# vi, vis, viz, vy, vys, vyz
-# mov, mo, movie
-# film, screen, vid, vide, video
-# fa, face, faces
-
-# Available:
-# moviefacer
-# tvfacer
-# filmfacer
-# filmofacer
-# filmoface
-# filmofaces 
-# filmershot
-# filmoshot
-# filmoshots
-# filmopics
-# filmopic <<
-# filmostills
-# filmknow
-# filmfamiliar <<
-# filmnear
-# filmeven
-# filmostill
-# filmoshow
-# filmosee
-# 
-# actorsee
-# actorsea
-
-# http://sentiwordnet.isti.cnr.it/
-
-# a b c d e f g h i j k l m n o p q r s t u v w x y z
-
-# Hip hoi!
-# filmopic is overal nog vrij: .com, fb, yt, tw, gh, ig, ...
-# Geldt ook allemaal voor filmopick.
-# (Geldt niet voor filmpic, filmpick, filmepic)
-# (filmpics.com bestaat, biedt film-afbeeldingen aan.)
-
 
 
 # --------------- Ancillaries ----------------------------------------
