@@ -8,7 +8,6 @@ services:
         image: postgres
         volumes: ['dbvol:/var/lib/postgresql/data']
         environment: [POSTGRES_PASSWORD]
-        ports: ['5432']
 
     # broker:
     #     image: rabbitmq
@@ -30,7 +29,10 @@ services:
     # and thus without downtime.
     proxy:
         build: ./proxy
-        ports: ['80:80', '5432:5432']
+        ports:
+            - '80:80'       # web
+            - '5432:5432'   # db
+            - '5601:5601'   # kibana
 
     es-log:
         image: elasticsearch
@@ -40,4 +42,3 @@ services:
 
     kibana:
         build: ./monitoring/kibana
-        ports: ['5601:5601']
