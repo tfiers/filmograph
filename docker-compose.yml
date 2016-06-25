@@ -17,12 +17,13 @@ services:
     #     build: ./app
     #     command: python miner/miner.py
 
+    # es-app:
+    #     image: elasticsearch
+
     web:
         build: ./app
-        # For development:
-        command: python webapp/webapp.py
-        # In production:
-        # command: gunicorn webapp.webapp:app -c webapp/gunicorn_conf.py
+        command: python webapp/webapp.py  # For development
+        # command: gunicorn webapp.webapp:app -c webapp/gunicorn_conf.py  # In production
 
     # TODO: mount directory containing 'nginx.conf', so we can update
     # proxying rules without needing to restart the proxy container
@@ -30,3 +31,13 @@ services:
     proxy:
         build: ./proxy
         ports: ['80:80']
+
+    es-log:
+        image: elasticsearch
+
+    logstash:
+        build: ./logging/logstash
+
+    kibana:
+        build: ./logging/kibana
+        ports: ['5601:5601']
