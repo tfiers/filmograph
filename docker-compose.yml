@@ -36,8 +36,8 @@ services:
         image: elasticsearch
 
     logstash:
-        build: ./logging/logstash
+        build: ./monitoring/logstash
 
     kibana:
-        build: ./logging/kibana
+        build: ./monitoring/kibana
         ports: ['5601:5601']
