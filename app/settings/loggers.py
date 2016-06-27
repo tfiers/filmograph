@@ -13,12 +13,16 @@ Usage:
     logger.error('Some function could not be performed.')
     logger.critical(('A serious error. The app might be unable to '
                      'continue running.'))
+
+The environment variable 'LOGGING_LEVEL' is the minimum severity level
+of a log message for it to be output to the logging handlers.
+Must be one of: 'DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL'.
 """
 
 import logging
-from settings import settings
+import os
 
-logging_level = getattr(logging, settings['logging_level'])
+logging_level = getattr(logging, os.getenv('LOGGING_LEVEL'))
 
 simple_formatter = logging.Formatter(
     '%(asctime)s %(levelname)s: %(message)s'

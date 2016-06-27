@@ -6,14 +6,20 @@ volumes:
 services:
     db:
         image: postgres
-        volumes: ['dbvol:/var/lib/postgresql/data']
-        environment: [POSTGRES_PASSWORD]
+        volumes:
+            - 'dbvol:/var/lib/postgresql/data'
+        environment:
+            - POSTGRES_PASSWORD
 
     # broker:
     #     image: rabbitmq
 
     # miner:
     #     build: ./app
+    #     environment:
+    #         - POSTGRES_PASSWORD
+    #         - LOGGING_LEVEL
+    #         - THEMOVIEDB_API_KEY
     #     command: python miner/miner.py
 
     # es-app:
@@ -21,6 +27,9 @@ services:
 
     web:
         build: ./app
+        environment:
+            - POSTGRES_PASSWORD
+            - LOGGING_LEVEL
         command: python webapp/webapp.py  # For development
         # command: gunicorn webapp.webapp:app -c webapp/gunicorn_conf.py  # In production
 

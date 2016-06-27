@@ -5,7 +5,6 @@ Lets the user search for movies, TV shows and people, and shows them
 images of roles that people played in different productions.
 """
 
-from settings import settings
 from flask import Flask, request, render_template
 from data.db_conn import db_session
 from miner import themoviedb

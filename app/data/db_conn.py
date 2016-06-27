@@ -35,15 +35,20 @@ http://flask.pocoo.org/docs/0.10/patterns/sqlalchemy/#declarative
 
 """
 
-from settings import settings
+import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 
-# Connect to the database at the url specified in the settings.
+# Connect to the database.
+# 
+# The database should be running in a container named 'db'.
+# We use the (default) user and database name 'postgres'.
+pwd = os.getenv('POSTGRES_PASSWORD')
+url = 'postgresql://postgres:'+pwd+'@db:5432/postgres'
 # Specify explicitly that all strings going in and coming out of the 
 # database should be of the Python `unicode` type.
-engine = create_engine(settings['database_url'], convert_unicode=True)
+engine = create_engine(url, convert_unicode=True)
 
 # Create the actual handle to the database.
 # See http://docs.sqlalchemy.org/en/rel_1_0/orm/session_basics.html#session-faq-whentocreate
