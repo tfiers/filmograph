@@ -1,5 +1,5 @@
 import os
-from settings.loggers import logger
+from loggers import logger
 from urllib import urlencode
 from requests import get
 from collections import OrderedDict

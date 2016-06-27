@@ -1,4 +1,4 @@
-from settings.loggers import logger
+from loggers import logger
 from requests import get
 from bs4 import BeautifulSoup
 from urlparse import urlparse, parse_qs
