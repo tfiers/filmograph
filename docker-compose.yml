@@ -6,8 +6,7 @@ volumes:
 services:
     db:
         image: postgres
-        volumes:
-            - 'dbvol:/var/lib/postgresql/data'
+        volumes: ['dbvol:/var/lib/postgresql/data']
         environment:
             - POSTGRES_PASSWORD
 
@@ -16,22 +15,22 @@ services:
 
     # miner:
     #     build: ./app
+    #     command: python miner/miner.py
     #     environment:
     #         - POSTGRES_PASSWORD
     #         - LOGGING_LEVEL
     #         - THEMOVIEDB_API_KEY
-    #     command: python miner/miner.py
 
     # es-app:
     #     image: elasticsearch
 
     web:
         build: ./app
+        command: python webapp/webapp.py  # For development
+        # command: gunicorn webapp.webapp:app -c webapp/gunicorn_conf.py  # In production
         environment:
             - POSTGRES_PASSWORD
             - LOGGING_LEVEL
-        command: python webapp/webapp.py  # For development
-        # command: gunicorn webapp.webapp:app -c webapp/gunicorn_conf.py  # In production
 
     proxy:
         build: ./proxy
