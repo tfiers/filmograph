@@ -57,7 +57,7 @@ db_session = scoped_session(sessionmaker(bind=engine,
                                          autocommit=False,
                                          autoflush=False))
 # To make an unscoped session instance, use:
-# session = sessionmaker(bind=engine)()
+# db_session = sessionmaker(bind=engine)()
 
 # Create the base class for classes mapped to database tables using 
 # SQLAlchemy's ORM.
