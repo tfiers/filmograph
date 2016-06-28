@@ -22,7 +22,7 @@ def get_api_response(path, params=None):
     url = 'https://api.themoviedb.org/3'+path
     logger.info(u'Requesting themoviedb resource {}{}'.format(
         path, "?{}".format(urlencode(params)) if params else ""))
-    params.update({'api_key': os.getenv['THEMOVIEDB_API_KEY']})
+    params.update({'api_key': os.getenv('THEMOVIEDB_API_KEY')})
     # Convert the json to an ordered dictionary, preserving the
     # insertion order of key-value pairs in the original json.
     return get(url, params=params).json(object_pairs_hook=OrderedDict)
