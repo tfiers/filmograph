@@ -4,15 +4,24 @@ separate processes).
 
 Usage:
 
-    from settings.loggers import logger
+    from loggers import logger
+
     logger.debug('Diagnostics information')
     logger.info('Everything works as expected')
-    logger.warning(('Something unexpected happened, or an error might '
-                    'happen soon, but the software still works as '
-                    'expected.'))
+    logger.warning('Something unexpected happened, or an error '\
+                   'might happen soon, but the software still '\
+                   'works as expected.')
     logger.error('Some function could not be performed.')
-    logger.critical(('A serious error. The app might be unable to '
-                     'continue running.'))
+    logger.critical('A serious error. The app might be unable to '\
+                    'continue running.')
+
+    # When logging an exception, use one of:
+
+    logger.exception('Extra message')
+    logger.error('Extra message', exc_info=True)  # or debug(), etc.
+
+    # so that the full stack trace gets output.
+
 
 The environment variable 'LOGGING_LEVEL' is the minimum severity level
 of a log message for it to be output to the logging handlers.
