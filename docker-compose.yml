@@ -32,6 +32,14 @@ services:
             - POSTGRES_PASSWORD
             - LOGGING_LEVEL
 
+    test:
+        build: ./app
+        command: py.test
+        environment:
+            - POSTGRES_PASSWORD
+            - LOGGING_LEVEL
+            - THEMOVIEDB_API_KEY
+
     proxy:
         build: ./proxy
         ports:
