@@ -1,7 +1,7 @@
+pytest
 SQLAlchemy
 psycopg2
 alembic
-celery
 requests
 beautifulsoup4
 Flask
