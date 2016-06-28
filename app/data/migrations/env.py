@@ -8,8 +8,7 @@ from logging.config import fileConfig
 config = context.config
 
 # Fill in the database url.
-from settings import settings
-url = settings.get('database_url')
+from data.db_conn import url
 config.set_main_option('sqlalchemy.url', url)
 
 # Interpret the config file for Python logging.
